@@ -19,3 +19,10 @@ const wifiHtml = readFileSync('dist/index.html', 'utf8')
 writeFileSync('dist/wifi/index.html', wifiHtml);
 copyFileSync('dist/brand/hai-wifi-ios-v2-180.png', 'dist/wifi/apple-touch-icon.png');
 writeFileSync('dist/.nojekyll', '');
+
+// A fresh entry URL avoids reusing an old Safari Web Clip page identity.
+mkdirSync('dist/gun', { recursive: true });
+const gunHtml = readFileSync('dist/index.html', 'utf8')
+ .replace('<title>Nguyễn Chí Hải (GUN) — Portfolio</title>', '<title>GUN · Hồ sơ Nguyễn Chí Hải</title>');
+writeFileSync('dist/gun/index.html', gunHtml);
+copyFileSync('dist/brand/gun-apple-touch-icon.png', 'dist/gun/apple-touch-icon.png');
