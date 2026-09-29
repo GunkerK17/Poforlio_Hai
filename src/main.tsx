@@ -3,6 +3,7 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import WifiLanding from './components/WifiLanding';
 import './index.css';
+import './responsive.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
