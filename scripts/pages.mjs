@@ -17,4 +17,5 @@ const wifiHtml = readFileSync('dist/index.html', 'utf8')
  .replace('content="GUN"', 'content="Hải Wi-Fi"')
  .replace('<title>Nguyễn Chí Hải (GUN) — Portfolio</title>', '<title>Hải Wi-Fi · Internet FPT Cần Thơ</title>');
 writeFileSync('dist/wifi/index.html', wifiHtml);
+copyFileSync('dist/brand/hai-wifi-ios-v2-180.png', 'dist/wifi/apple-touch-icon.png');
 writeFileSync('dist/.nojekyll', '');
