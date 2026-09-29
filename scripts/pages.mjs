@@ -10,5 +10,10 @@ for (const name of readdirSync('dist/assets')) {
   writeFileSync(file, text);
 }
 mkdirSync('dist/wifi', { recursive: true });
-copyFileSync('dist/index.html', 'dist/wifi/index.html');
+const wifiHtml = readFileSync('dist/index.html', 'utf8')
+ .replaceAll('brand/gun', 'brand/hai-wifi')
+ .replaceAll('gun.webmanifest', 'hai-wifi.webmanifest')
+ .replace('content="GUN"', 'content="Hải Wi-Fi"')
+ .replace('<title>Nguyễn Chí Hải (GUN) — Portfolio</title>', '<title>Hải Wi-Fi · Internet FPT Cần Thơ</title>');
+writeFileSync('dist/wifi/index.html', wifiHtml);
 writeFileSync('dist/.nojekyll', '');
