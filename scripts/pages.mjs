@@ -7,6 +7,7 @@ for (const name of readdirSync('dist/assets')) {
   let text = readFileSync(file, 'utf8').replaceAll('/images/', `${base}images/`);
   text = text.replaceAll('href:"/wifi"', `href:"${base}wifi/"`).replaceAll('href:"/#products"', `href:"${base}#products"`).replaceAll('href:"/"', `href:"${base}"`);
   text = text.replace(/href:(["'`])\/(wifi\/?|#products)?\1/g, (_, quote, route = '') => `href:${quote}${base}${route.startsWith('wifi') ? 'wifi/' : route}${quote}`);
+  text = text.replaceAll(base + base.slice(1), base);
   writeFileSync(file, text);
 }
 mkdirSync('dist/wifi', { recursive: true });
