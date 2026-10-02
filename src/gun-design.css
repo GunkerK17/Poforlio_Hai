@@ -65,6 +65,8 @@ body:has(.portfolio-app) { background: var(--gun-bg); color: var(--gun-text); }
 .hero-facts strong span { font: 500 9px 'Be Vietnam Pro'; color: #b6a28f; }
 .hero-facts p { font-size: 9px; color: #a6a099; margin-top: 6px; line-height: 1.8; }
 .hero-portrait-stage { height: 675px; position: relative; min-width: 0; }
+.hero-portrait-visual { position: relative; height: 100%; min-width: 0; }
+.portrait-labels { display: contents; }
 .hero-portrait { position: absolute; bottom: 19px; left: 0; width: 100%; height: 660px; object-fit: contain; mix-blend-mode: screen; filter: grayscale(1) contrast(1.12); z-index: 2; pointer-events: none; mask-image: linear-gradient(#000 82%, transparent 100%); }
 .hero-watermark { position: absolute; top: -15px; right: 15px; font: 700 250px/.9 'Outfit'; letter-spacing: -20px; color: transparent; -webkit-text-stroke: 1px #ffffff0c; }
 .portrait-orbit { position: absolute; width: 94%; aspect-ratio: 1; top: 122px; left: 3%; background: radial-gradient(circle, #ff771b0a 0%, #ffffff02 60%, transparent 71%); border-radius: 50%; }
@@ -454,6 +456,21 @@ body:has(.wl) { background: var(--gun-bg); }
   .portfolio-app .capability-grid { grid-template-columns: 1fr; }
   .portfolio-app .moment-image { height: 155px; }
 }
+/* On narrower layouts, give the portrait and its captions separate rows. */
+@media(max-width:1100px) {
+  .hero-portrait-stage { display: flex; flex-direction: column; height: auto; gap: 14px; }
+  .hero-portrait-visual { height: 590px; width: 100%; flex-shrink: 0; }
+  .hero-portrait-motion { transform: none!important; }
+  .portrait-labels { display: flex; flex-wrap: wrap; gap: 10px; }
+  .portrait-labels .portrait-label { position: static; flex: 1 1 150px; min-width: 0; animation: none; box-shadow: 0 8px 24px #0001; }
+  .portrait-labels .portrait-label>div { min-width: 0; }
+  .portrait-labels .portrait-label-icon { flex-shrink: 0; }
+  .portrait-labels .portrait-label strong { display: block; line-height: 1.5; }
+  .portrait-labels .portrait-label-bottom>svg { display: none; }
+  .hero-portrait-stage .portrait-caption { position: static; padding-top: 2px; }
+}
+@media(max-width:800px) { .hero-portrait-visual { height: 560px; } }
+@media(max-width:600px) { .hero-portrait-visual { height: 495px; } }
 @media(hover:none), (pointer:coarse) { .gun-cursor { display: none; } }
 @media(prefers-reduced-motion:reduce) {
   html { scroll-behavior: auto; }

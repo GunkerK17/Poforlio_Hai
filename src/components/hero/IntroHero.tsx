@@ -56,13 +56,17 @@ export function IntroHero() {
         mouseX.set(((event.clientX - rect.left) / rect.width - .5) * 48);
         mouseY.set(((event.clientY - rect.top) / rect.height - .5) * 32);
       }} onPointerLeave={() => { mouseX.set(0); mouseY.set(0); }} onPointerCancel={() => { mouseX.set(0); mouseY.set(0); }}>
+        <div className="hero-portrait-visual">
         <motion.span className="hero-watermark" style={reduced ? undefined : { x: watermarkX }} aria-hidden="true">18</motion.span>
         <motion.div className="portrait-orbit" style={reduced ? undefined : { y: scrollY, rotate: scrollRotate }} aria-hidden="true"><span className="orbit-track" /><span className="orbit-dashed" /><span className="orbit-dot" /></motion.div>
         <motion.div className="hero-portrait-motion" style={reduced ? undefined : { y: scrollY, scale: scrollScale }}>
           <motion.img className="hero-portrait" style={reduced ? undefined : { x, y, rotateX: depthX, rotateY: depthY }} src="/images/hero-player-cutout.png" alt="Hải trong trang phục bóng đá, cùng trái bóng và áo số 18" fetchPriority="high" />
         </motion.div>
+        </div>
+        <div className="portrait-labels">
         <div className="portrait-label portrait-label-top"><span className="portrait-label-icon"><Trophy size={19} /></span><div><small>ĐAM MÊ TRÊN SÂN CỎ</small><strong>Football is my roots.</strong></div></div>
         <div className="portrait-label portrait-label-bottom"><span className="portrait-label-icon"><Code2 size={19} /></span><div><small>TỪ ĐAM MÊ ĐẾN CÔNG VIỆC</small><strong>Luôn học. Luôn tiến lên.</strong></div><ArrowUpRight size={18}/></div>
+        </div>
         <span className="portrait-caption">NGUYỄN CHÍ HẢI <span>—</span> FOOTBALL / TECH / LIFE</span>
       </motion.div>
     </div>
