@@ -1,0 +1,7 @@
+export const wifiDevices = [
+  { id: 'router', title: 'Wi-Fi FPT', kicker: 'KẾT NỐI CẢ NHÀ', description: 'Học tập, làm việc và giải trí. Bắt đầu từ đường truyền phù hợp với căn nhà của bạn.', tags: ['Internet', 'Nhiều thiết bị', 'Tư vấn không gian'], price: '195k', priceLabel: 'Wi-Fi / tháng', color: '#ff7b24', image: '/images/wifi/combo-vvip-hai.png' },
+  { id: 'play', title: 'FPT Play', kicker: 'THÊM NIỀM VUI MỖI NGÀY', description: 'Thêm truyền hình và giải trí cho cả nhà. Chọn gói có FPT Play, tư vấn Box riêng khi cần.', tags: ['Wi-Fi + FPT Play', 'Giải trí', 'Box tư vấn riêng'], price: '220k', priceLabel: 'Wi-Fi + FPT Play / tháng', color: '#ef671d', image: '/images/wifi/combo-vvip-hai.png' },
+  { id: 'camera-indoor', title: 'Camera Play 4', kicker: 'GẦN NHÀ, DÙ BẠN Ở ĐÂU', description: 'Khám phá camera trong nhà: hình ảnh 3MP, đàm thoại hai chiều và góc nhìn xoay linh hoạt.', tags: ['3MP', 'Đàm thoại 2 chiều', 'Xoay ngang 215°'], price: '230k', priceLabel: 'Combo thêm camera / tháng', color: '#d9914b', image: '/images/wifi/camera-play4-reference.jpg' },
+  { id: 'camera-outdoor', title: 'Camera IQ 4S', kicker: 'THÊM MỘT GÓC NHÌN AN TÂM', description: 'Camera cho không gian ngoài trời, có đèn rọi, cảnh báo chuyển động và đàm thoại hai chiều.', tags: ['3MP', 'Đèn rọi', 'Đàm thoại 2 chiều'], price: '230k', priceLabel: 'Combo tặng 01 camera / tháng', color: '#c58b55', image: '/images/wifi/camera-iq4s-reference.jpg' },
+] as const;
+export type WifiDeviceId = typeof wifiDevices[number]['id'];

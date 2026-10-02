@@ -1,159 +1,71 @@
-import React, { useRef, useState } from 'react';
-import { ArrowDown, ArrowUpRight, MapPin, Trophy, GraduationCap, BriefcaseBusiness } from 'lucide-react';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useRef } from 'react';
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
+import { ArrowDown, ArrowUpRight, Code2, GraduationCap, MapPin, Trophy, Wifi } from 'lucide-react';
 import { profileContent as profile } from '../../data/profileContent';
-import './intro-hero.css';
-
-interface MemoryCardProps {
-  className?: string;
-  image: string;
-  alt: string;
-  number: string;
-  title: string;
-  subtitle: string;
-  defaultRotate?: number;
-}
-
-function MemoryCard3D({
-  className = '',
-  image,
-  alt,
-  number,
-  title,
-  subtitle,
-  defaultRotate = 0,
-}: MemoryCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [tiltStyle, setTiltStyle] = useState<React.CSSProperties>({
-    transform: `perspective(800px) rotate(${defaultRotate}deg)`,
-  });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    // Calculate 3D tilt angles based on cursor distance from card center
-    const rotateX = ((y - centerY) / centerY) * -9; // Max 9 deg tilt
-    const rotateY = ((x - centerX) / centerX) * 9;
-
-    setTiltStyle({
-      transform: `perspective(800px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(16px) scale(1.035)`,
-      transition: 'transform 0.08s ease-out, box-shadow 0.25s ease, border-color 0.25s ease',
-    });
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setTiltStyle({
-      transform: `perspective(800px) rotate(${defaultRotate}deg) translateZ(0) scale(1)`,
-      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease',
-    });
-  };
-
-  return (
-    <figure
-      ref={cardRef}
-      className={`intro-photo-3d ${className} ${isHovered ? 'card-3d-active' : ''}`}
-      style={tiltStyle}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <img src={image} alt={alt} loading="lazy" />
-      <div className="intro-photo-glare" />
-      <figcaption>
-        <b>{number} / {title}</b>
-        <span>{subtitle} <ArrowUpRight size={13} /></span>
-      </figcaption>
-    </figure>
-  );
-}
+import { SocialLinks } from '../ui/SocialLinks';
+import { CvLinks } from '../ui/CvLinks';
 
 export function IntroHero() {
-  return (
-    <section id="home" className="intro-hero">
-      <img className="intro-field" src="/images/hero-stadium-night.png" alt="" aria-hidden="true" />
-      <div className="intro-shade" />
-
-      <div className="wrap intro-stage">
-        <div className="intro-ground" aria-hidden="true" />
-
-        {/* Central Cinematic Athlete with ball */}
-        <div className="intro-player">
-          <img
-            src="/images/hero-player-cutout.png"
-            alt="Nguyễn Chí Hải #18 cùng trái bóng trên sân cỏ đêm"
-            fetchPriority="high"
-          />
-        </div>
-
-        {/* Left Column: Greeting, Bio & CTAs */}
-        <div className="intro-copy">
-          <p className="eyebrow">FOOTBALL · TECHNOLOGY · BUSINESS · LIFE</p>
-          <h1>Xin chào,<br />mình là <span>{profile.name.trim().split(/\s+/).pop()}.</span></h1>
-          <p className="intro-bio">{profile.bio}</p>
-          <div className="actions">
-            <a className="button" href="#story">Khám phá hành trình <ArrowDown size={15} /></a>
-            <a className="button outline" href={profile.contact.zaloUrl} target="_blank" rel="noopener noreferrer">Kết nối với tôi <ArrowUpRight size={15} /></a>
-          </div>
-        </div>
-
-        {/* Right Column: 3 Memory Cards grouped neatly with 3D tilt */}
-        <div className="intro-memories-column">
-          <div className="intro-memories-stack" aria-label="Bóng đá, tốt nghiệp và công nghệ">
-            <MemoryCard3D
-              className="card-football"
-              image="/images/hero-captain.jpg"
-              alt="Hải khoác áo số 18 của Đại học FPT Cần Thơ"
-              number="01"
-              title="FOOTBALL"
-              subtitle="Đam mê luôn ở đây"
-              defaultRotate={-1.5}
-            />
-            <MemoryCard3D
-              className="card-workspace"
-              image="/images/hero-workspace.jpg"
-              alt="Góc làm việc với ManageField API, lập trình và công nghệ"
-              number="02"
-              title="TECHNOLOGY"
-              subtitle="Build. Learn. Improve."
-              defaultRotate={1.5}
-            />
-            <MemoryCard3D
-              className="card-graduation"
-              image="/images/hero-graduation.jpg"
-              alt="Nguyễn Chí Hải nhận bằng tốt nghiệp Đại học FPT Cần Thơ"
-              number="03"
-              title="MY JOURNEY"
-              subtitle="Học hỏi để trưởng thành"
-              defaultRotate={-1}
-            />
-          </div>
-
-          <p className="intro-script-side">
-            Always learning.<br /><small>Always moving forward.</small>
-          </p>
-        </div>
+  const reduced = useReducedMotion();
+  const stage = useRef<HTMLDivElement>(null);
+  const hero = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: hero, offset: ['start start', 'end start'] });
+  const scrollY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const scrollRotate = useTransform(scrollYProgress, [0, 1], [0, -9]);
+  const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const mouseX = useMotionValue(0), mouseY = useMotionValue(0);
+  const x = useSpring(mouseX, { stiffness: 90, damping: 24 });
+  const y = useSpring(mouseY, { stiffness: 90, damping: 24 });
+  const depthX = useTransform(y, [-16, 16], [3, -3]);
+  const depthY = useTransform(x, [-24, 24], [-5, 5]);
+  const watermarkX = useTransform(x, value => -value * .65);
+  const entrance = (delay: number) => ({
+    initial: reduced ? false as const : { opacity: 0, y: 22 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: .75, delay: reduced ? 0 : delay },
+  });
+  return <section id="home" ref={hero} className="gun-hero" aria-labelledby="hero-title">
+    <div className="hero-ambient" aria-hidden="true"><span /><span /></div>
+    <div className="wrap gun-hero-grid">
+      <div className="gun-hero-copy">
+        <motion.p className="hero-location" {...entrance(.08)}><span className="status-dot" /><MapPin size={13} /> CẦN THƠ, VIỆT NAM</motion.p>
+        <motion.p className="hero-greeting" {...entrance(.15)}>Xin chào, mình là <strong>{profile.name}.</strong></motion.p>
+        <h1 id="hero-title" aria-label="Bạn có thể gọi mình là Gun.">
+          <motion.span className="hero-title-small" {...entrance(.23)}>Bạn có thể gọi mình là</motion.span>
+          <span className="hero-name" aria-hidden="true">{'GUN.'.split('').map((letter, i) => <motion.span key={i} initial={reduced ? false : { opacity: 0, y: 70, rotate: 8, filter: 'blur(10px)' }} animate={{ opacity: 1, y: 0, rotate: 0, filter: 'blur(0px)' }} transition={{ duration: .85, delay: .25 + i * .09 }}>{letter}</motion.span>)}</span>
+        </h1>
+        <motion.p className="hero-role" {...entrance(.5)}>Kinh doanh FPT Telecom <span>/</span> Coach bóng đá</motion.p>
+        <motion.p className="hero-description" {...entrance(.58)}>Từ sân cỏ đến công nghệ, mình mang tinh thần đồng đội vào mọi việc. Hiện mình tư vấn Internet FPT và hướng dẫn các cầu thủ nhí tại Cần Thơ.</motion.p>
+        <motion.div className="hero-actions" {...entrance(.65)}>
+          <a className="button" href="#products">Mình cần lắp Wi-Fi <ArrowUpRight size={18} /></a>
+          <a className="button outline" href="#football">Tìm lớp bóng đá <ArrowUpRight size={18} /></a>
+        </motion.div>
+        <motion.div className="hero-cv-row" {...entrance(.69)}><CvLinks/></motion.div>
+        <motion.div className="hero-social-row" {...entrance(.72)}><span>KẾT NỐI VỚI MÌNH</span><SocialLinks compact /></motion.div>
+        <motion.div className="hero-facts" {...entrance(.8)}>
+          <div><Trophy size={18} /><strong>06<span>năm</span></strong><p>Nền tảng bóng đá<br />tại CLB An Giang</p></div>
+          <div><GraduationCap size={18} /><strong>FPT<span>University</span></strong><p>Tốt nghiệp ngành<br />Kỹ thuật phần mềm</p></div>
+          <div><Wifi size={18} /><strong>FPT<span>Telecom</span></strong><p>Kinh doanh & tư vấn<br />giải pháp Internet</p></div>
+        </motion.div>
       </div>
-
-      {/* Bottom Credentials Ribbon */}
-      <div className="intro-credentials">
-        <div className="wrap">
-          <div><MapPin /><span>{profile.location}</span></div>
-          <div><Trophy /><span><b>6 năm</b><small>Tập luyện và thi đấu môi trường bóng đá chuyên nghiệp</small></span></div>
-          <div><GraduationCap /><span><b>FPT University Cần Thơ</b><small>Kỹ thuật phần mềm</small></span></div>
-          <div><BriefcaseBusiness /><span><b>{profile.currentCompany}</b><small>Kinh doanh · Tư vấn giải pháp</small></span></div>
-        </div>
-      </div>
-    </section>
-  );
+      <motion.div className="hero-portrait-stage" ref={stage} {...entrance(.25)} onPointerMove={event => {
+        if (reduced || event.pointerType !== 'mouse') return;
+        const rect = stage.current?.getBoundingClientRect();
+        if (!rect) return;
+        mouseX.set(((event.clientX - rect.left) / rect.width - .5) * 48);
+        mouseY.set(((event.clientY - rect.top) / rect.height - .5) * 32);
+      }} onPointerLeave={() => { mouseX.set(0); mouseY.set(0); }} onPointerCancel={() => { mouseX.set(0); mouseY.set(0); }}>
+        <motion.span className="hero-watermark" style={reduced ? undefined : { x: watermarkX }} aria-hidden="true">18</motion.span>
+        <motion.div className="portrait-orbit" style={reduced ? undefined : { y: scrollY, rotate: scrollRotate }} aria-hidden="true"><span className="orbit-track" /><span className="orbit-dashed" /><span className="orbit-dot" /></motion.div>
+        <motion.div className="hero-portrait-motion" style={reduced ? undefined : { y: scrollY, scale: scrollScale }}>
+          <motion.img className="hero-portrait" style={reduced ? undefined : { x, y, rotateX: depthX, rotateY: depthY }} src="/images/hero-player-cutout.png" alt="Hải trong trang phục bóng đá, cùng trái bóng và áo số 18" fetchPriority="high" />
+        </motion.div>
+        <div className="portrait-label portrait-label-top"><span className="portrait-label-icon"><Trophy size={19} /></span><div><small>ĐAM MÊ TRÊN SÂN CỎ</small><strong>Football is my roots.</strong></div></div>
+        <div className="portrait-label portrait-label-bottom"><span className="portrait-label-icon"><Code2 size={19} /></span><div><small>TỪ ĐAM MÊ ĐẾN CÔNG VIỆC</small><strong>Luôn học. Luôn tiến lên.</strong></div><ArrowUpRight size={18}/></div>
+        <span className="portrait-caption">NGUYỄN CHÍ HẢI <span>—</span> FOOTBALL / TECH / LIFE</span>
+      </motion.div>
+    </div>
+    <div className="wrap hero-bottom"><a href="#services"><span className="scroll-mouse"><i /></span>Cuộn xuống để hiểu mình hơn <ArrowDown size={15}/></a><span>ĐAM MÊ TẠO NÊN KẾT NỐI <span className="tiny-star">✳</span></span></div>
+  </section>;
 }

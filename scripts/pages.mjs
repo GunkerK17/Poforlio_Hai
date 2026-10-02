@@ -5,8 +5,8 @@ for (const name of readdirSync('dist/assets')) {
   if (!/\.(js|css)$/.test(name)) continue;
   const file = `dist/assets/${name}`;
   let text = readFileSync(file, 'utf8').replaceAll('/images/', `${base}images/`);
-  text = text.replaceAll('href:"/wifi"', `href:"${base}wifi/"`).replaceAll('href:"/#products"', `href:"${base}#products"`).replaceAll('href:"/"', `href:"${base}"`);
-  text = text.replace(/href:(["'`])\/(wifi\/?|#products)?\1/g, (_, quote, route = '') => `href:${quote}${base}${route.startsWith('wifi') ? 'wifi/' : route}${quote}`);
+  text = text.replaceAll('href:"/wifi#pricing"', `href:"${base}wifi/#pricing"`).replaceAll('href:"/wifi"', `href:"${base}wifi/"`).replaceAll('href:"/#products"', `href:"${base}#products"`).replaceAll('href:"/"', `href:"${base}"`);
+  text = text.replace(/href:(["'`])\/(wifi\/?(?:#pricing)?|#products)?\1/g, (_, quote, route = '') => `href:${quote}${base}${route.startsWith('wifi') ? 'wifi/' + (route.includes('#') ? route.slice(route.indexOf('#')) : '') : route}${quote}`);
   text = text.replaceAll(base + base.slice(1), base);
   writeFileSync(file, text);
 }

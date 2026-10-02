@@ -9,7 +9,23 @@ Website là portfolio tĩnh: khách xem nội dung, không có trang quản tr�
 - Chi tiết dự án: `src/data/projects.ts`. Tiêu đề và ảnh một số thẻ đang được chọn thêm trong `src/App.tsx`.
 - Nhật ký và hành trình: mảng `moments` và `journey` trong `src/App.tsx`.
 - Ảnh: thay file tương ứng trong `public/images`, giữ nguyên tên; hoặc sửa tên ảnh được tham chiếu trong code.
-- Giao diện: `src/portfolio.css`.
+- Giao diện đen–cam và responsive: `src/gun-design.css` (được nạp sau các stylesheet nền).
+- Chế độ sáng/tối chung cho portfolio và Wi-Fi: `src/components/ui/ThemeToggle.tsx`, bảng màu trong `src/theme.css`. Lần đầu theo thiết bị; lựa chọn lưu ở `localStorage` với khóa `hai-theme`, đồng bộ giữa các tab. Script trong `index.html` áp dụng màu trước khi React khởi động.
+- Hiệu ứng portfolio bổ sung: `src/portfolio-motion.css`, chiều sâu ảnh nhân vật trong `IntroHero.tsx`, tương tác thẻ/nhật ký trong `MotionGraphics.tsx`. Tôn trọng cài đặt giảm chuyển động của thiết bị.
+- Hero và hiệu ứng chữ/ảnh: `src/components/hero/IntroHero.tsx`.
+- CV xem trực tiếp và tải về: `public/cv/ITSale_FPTTelecom.pdf`; thay đúng file này để cập nhật CV. Nút ở hero và cửa sổ Hồ sơ dùng chung `src/components/ui/CvLinks.tsx`, tự theo đường dẫn triển khai.
+- Giới thiệu dịch vụ Wi-Fi và tuyển học viên bóng đá: `src/components/ServicesSection.tsx`.
+- Hiệu ứng cuộn trang, cursor và nút liên hệ nổi: `src/components/MotionGraphics.tsx`.
+- Card nghiêng theo chuột, nút magnetic, parallax và màu ảnh nhân vật: `src/interaction-polish.css`.
+- Ba gói chính 195k / 220k / 230k: `src/data/wifiPlans.ts`, dùng chung cho portfolio và trang Wi-Fi.
+- Trang Wi-Fi nền sáng và kể chuyện theo cuộn: `src/components/WifiLanding.tsx`, `src/wifi-cinematic.css` nạp cuối. Quy tắc hình ảnh, chuyển động và kiến trúc được ghi tại `DESIGN-WIFI.md`.
+- Nội dung bốn thiết bị: `src/data/wifiDevices.ts`. Ba chương hero: `src/data/wifiExperience.ts`. Mũi tên chuyển cảnh: `src/components/wifi/ProductShowcase.tsx`; xoay nhiều trục, preset góc và chế độ xoay bằng chạm: `src/components/wifi/DeviceStage.tsx`.
+- Gói 230k tặng 01 camera, chọn 1 trong 2: `src/components/wifi/CameraChooser.tsx`. Xác nhận mẫu để cập nhật tóm tắt; khách sao chép yêu cầu và tự gửi qua Zalo.
+- Footer với Google Maps FPT Ninh Kiều tại Cần Thơ: `src/components/wifi/WifiFooter.tsx`; địa chỉ, nguồn xác minh và URL Maps nằm trong `src/data/wifiExperience.ts`.
+- Mô phỏng modem, FPT Play, Camera Play 4 và IQ 4S bằng Three.js: `src/components/wifi/deviceModels.ts`. Module tải riêng khi mở trang Wi-Fi; dừng dựng hình khi thiết bị ra khỏi màn hình, hỗ trợ giảm chuyển động và hiện poster nếu trình duyệt không có WebGL.
+- Poster combo dùng ảnh bạn cung cấp tại `public/images/wifi/combo-vvip-hai.png`. Hai ảnh bảng thông số camera là tài liệu tham chiếu; không hiển thị số điện thoại người bán khác trên trang.
+- Liên kết mạng xã hội lấy từ `src/data/profile.ts`; hero hiển thị qua `src/components/ui/SocialLinks.tsx`.
+- Phần đăng ký bóng đá mở Zalo hoặc gọi trực tiếp; phụ huynh trao đổi tuổi học viên, lịch tập, địa điểm và học phí với Hải.
 
 ## Quy trình cập nhật
 

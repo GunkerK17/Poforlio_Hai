@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowDown, ArrowUpRight, ArrowRight, MapPin, Menu, X, Check, Wifi, Tv, Camera, Mail, Phone, UserRound, GraduationCap, BriefcaseBusiness, Trophy, Users, CalendarDays, Youtube, Facebook, Instagram, Music2 } from 'lucide-react';
+import { ArrowUpRight, MapPin, Menu, X, Mail, Phone, UserRound, GraduationCap, BriefcaseBusiness, Trophy, Users, CalendarDays, Youtube, Facebook, Instagram, Music2 } from 'lucide-react';
 
 import { profileContent } from './data/profileContent';
-import { skillsData } from './data/skills';
-import { projectsData } from './data/projects';
 import { AuthenticPhoto } from './components/ui/AuthenticPhoto';
 import './portfolio.css';
 import { IntroHero } from './components/hero/IntroHero';
 import { WorkSections } from './components/WorkSections';
 import { Story } from './components/story/Story';
+import { ServicesSection } from './components/ServicesSection';
+import { MotionGraphics } from './components/MotionGraphics';
+import { ThemeToggle } from './components/ui/ThemeToggle';
+import { CvLinks } from './components/ui/CvLinks';
 
 
 const workstation = 'att.z4FaEGg355ZZkQ2bUWi6vR2Sn2nxXhDkf_KXj08dQZw.jpg';
-const links = [['Trang chủ', 'home'], ['Về tôi', 'story'], ['Kỹ năng', 'skills'], ['Dự án', 'projects'], ['Dịch vụ', 'products'], ['Nhật ký', 'content']];
+const links = [['Về mình', 'story'], ['Wi-Fi', 'products'], ['Bóng đá', 'football'], ['Dự án', 'projects'], ['Kết nối', 'contact']];
 const moments = [
   { image: 'IMG_7935.JPG', category: 'Bóng đá', title: 'Cùng đồng đội, cùng tiến bộ.', body: 'Những buổi trao đổi chiến thuật và những bài học về tinh thần đồng đội trên sân cỏ.' },
   { image: workstation, category: 'Công nghệ', title: 'Từ một ý tưởng đến dòng code.', body: 'Góc làm việc và hành trình xây dựng ManageField — nơi tình yêu bóng đá gặp công nghệ.' },
@@ -48,29 +50,41 @@ function Dialog({ children, close, title }: { children: React.ReactNode; close: 
 export default function App() {
   const profile = profileContent;
   const [menu, setMenu] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const closeProfile = React.useCallback(() => setProfileOpen(false), []);
   const [detail, setDetail] = useState<Detail | null>(null), [filter, setFilter] = useState('Tất cả');
   const closeDetail = React.useCallback(() => setDetail(null), []);
-  const shortName = profile.name.trim().split(/\s+/).pop();
-  const journey = [
-    { image: 'IMG_9587.JPG', tag: 'Khởi đầu', title: 'Bắt đầu với bóng đá', body: 'Những bước chạy đầu tiên, nuôi dưỡng tình yêu với trái bóng tròn.' },
-    { image: 'IMG_5663.JPG', tag: `${profile.yearsInFootball} năm`, title: 'Thi đấu chuyên nghiệp', body: `Rèn luyện bản lĩnh và kỷ luật tại ${profile.footballClub}.` },
-    { image: 'IMG_9161.JPG', tag: 'Trưởng thành', title: 'Bước vào công nghệ', body: profile.university },
-    { image: 'IMG_3698.JPG', tag: 'Hiện tại', title: 'Công việc & đam mê', body: `${profile.currentCompany}. Tiếp tục sống cùng bóng đá.` },
-  ];
-  return <>
-    <header className="site-header"><div className="wrap nav-inner"><a className="brand brand-lockup" href="#home" aria-label="GUN — Trang chủ"><span className="brand-word">GUN<small>NGUYỄN CHÍ HẢI</small></span></a><nav aria-label="Điều hướng chính" className={menu ? 'navigation open' : 'navigation'}>{links.map(([text, id]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{text}</a>)}<button className="profile-nav" onClick={() => { setMenu(false); setProfileOpen(true); }}><UserRound size={15} /><span>Hồ sơ</span></button></nav><a href={profile.contact.zaloUrl} target="_blank" rel="noopener noreferrer" className="button small nav-contact">Kết nối với tôi <ArrowUpRight size={15} /></a><button className="menu-toggle" aria-label={menu ? 'Đóng menu' : 'Mở menu'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X /> : <Menu />}</button></div></header>
-    <main>
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) setActiveSection(entry.target.id); });
+    }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+    ['home', ...links.map(([, id]) => id)].forEach(id => { const section = document.getElementById(id); if (section) observer.observe(section); });
+    return () => { window.removeEventListener('scroll', onScroll); observer.disconnect(); };
+  }, []);
+  useEffect(() => {
+    if (!menu) return;
+    const key = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenu(false); };
+    document.addEventListener('keydown', key);
+    return () => document.removeEventListener('keydown', key);
+  }, [menu]);
+  return <div className="portfolio-app">
+    <a className="skip-link" href="#main-content">Đến nội dung chính</a>
+    <MotionGraphics />
+    <header className={`site-header ${scrolled ? 'header-scrolled' : ''}`}><div className="wrap nav-inner"><a className="brand brand-lockup" href="#home" aria-label="GUN — Trang chủ"><span className="brand-word">GUN<span className="brand-period">.</span><small>NGUYỄN CHÍ HẢI</small></span></a><nav id="main-navigation" aria-label="Điều hướng chính" className={menu ? 'navigation open' : 'navigation'}>{links.map(([text, id]) => <a key={id} href={`#${id}`} className={activeSection === id ? 'nav-active' : ''} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setMenu(false)}>{text}</a>)}<button className="profile-nav" onClick={() => { setMenu(false); setProfileOpen(true); }}><UserRound size={15} /><span>Hồ sơ</span></button></nav><div className="header-actions"><ThemeToggle/><a href={profile.contact.zaloUrl} target="_blank" rel="noopener noreferrer" className="button small nav-contact">Nhắn Hải <ArrowUpRight size={15} /></a><button className="menu-toggle" aria-label={menu ? 'Đóng menu' : 'Mở menu'} aria-expanded={menu} aria-controls="main-navigation" onClick={() => setMenu(!menu)}>{menu ? <X /> : <Menu />}</button></div></div></header>
+    <main id="main-content">
       <IntroHero />
+      <ServicesSection />
       <Story />
       <WorkSections />
       <section id="content" className="section light"><div className="wrap"><div className="section-heading"><div><Label>06 / NHẬT KÝ / LIFE</Label><h2>Những khoảnh khắc<br />đáng nhớ.</h2></div><div className="filters" role="group" aria-label="Lọc nhật ký">{['Tất cả', 'Bóng đá', 'Công nghệ', 'Công việc', 'Cuộc sống'].map(f => <button key={f} aria-pressed={filter === f} className={filter === f ? 'active' : ''} onClick={() => setFilter(f)}>{f}</button>)}</div></div><div className="moments-grid">{moments.filter(m => filter === 'Tất cả' || m.category === filter).map(m => <button key={m.title} className="moment" onClick={() => setDetail({ ...m, body: [m.body] })}><div className="moment-image"><Photo name={m.image} /><span><ArrowUpRight size={20} /></span></div><span className="moment-category">{m.category}</span><h3>{m.title}</h3></button>)}</div></div></section>
-      <section id="contact" className="contact dark"><Photo name="IMG_7934.JPG" className="contact-background" /><div className="wrap contact-layout"><div><Label>07 / KẾT NỐI VỚI TÔI</Label><h2>Cùng nói chuyện nhé<span>?</span></h2><p>Một ý tưởng mới, một trận bóng hay,<br />hay đơn giản là một lời chào.</p></div><div className="contact-links"><a className="button" href={profile.contact.zaloUrl} target="_blank" rel="noreferrer">Nhắn cho mình qua Zalo <ArrowUpRight size={18} /></a><a href={`tel:${profile.contact.phone}`}><Phone size={16} />{profile.contact.phoneFormatted}</a><a href={`mailto:${profile.contact.email}`}><Mail size={16} />{profile.contact.email}</a><div className="personal-socials"><a href={profile.contact.youtubeUrl} target="_blank" rel="noopener noreferrer"><Youtube size={18}/><span>YouTube</span><ArrowUpRight size={13}/></a><a href={profile.contact.facebookUrl} target="_blank" rel="noopener noreferrer"><Facebook size={18}/><span>Facebook</span><ArrowUpRight size={13}/></a><a href={profile.contact.tiktokUrl} target="_blank" rel="noopener noreferrer"><Music2 size={18}/><span>TikTok</span><ArrowUpRight size={13}/></a><a href={profile.contact.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={18}/><span>Instagram</span><ArrowUpRight size={13}/></a></div></div></div></section>
+      <section id="contact" className="contact dark"><Photo name="IMG_7934.JPG" className="contact-background" /><div className="wrap contact-layout"><div><Label>07 / KẾT NỐI VỚI TÔI</Label><h2>Kết nối với Hải<span>.</span></h2><p>Bạn cần lắp Wi-Fi, tìm lớp bóng đá cho bé,<br />hay muốn theo dõi câu chuyện của mình?</p></div><div className="contact-links"><a className="button" href={profile.contact.zaloUrl} target="_blank" rel="noreferrer">Nhắn cho mình qua Zalo <ArrowUpRight size={18} /></a><a href={`tel:${profile.contact.phone}`}><Phone size={16} />{profile.contact.phoneFormatted}</a><a href={`mailto:${profile.contact.email}`}><Mail size={16} />{profile.contact.email}</a><div className="personal-socials"><a href={profile.contact.youtubeUrl} target="_blank" rel="noopener noreferrer"><Youtube size={18}/><span>YouTube</span><ArrowUpRight size={13}/></a><a href={profile.contact.facebookUrl} target="_blank" rel="noopener noreferrer"><Facebook size={18}/><span>Facebook</span><ArrowUpRight size={13}/></a><a href={profile.contact.tiktokUrl} target="_blank" rel="noopener noreferrer"><Music2 size={18}/><span>TikTok</span><ArrowUpRight size={13}/></a><a href={profile.contact.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={18}/><span>Instagram</span><ArrowUpRight size={13}/></a></div></div></div></section>
     </main><footer><div className="wrap footer-inner"><div><a href="#home" className="brand">{profile.nickname}<span>.</span></a><p>FOOTBALL · TECH · LIFE</p></div><p>© {new Date().getFullYear()} {profile.name}<br />Made with passion in Cần Thơ.</p><a className="back-top" href="#home" aria-label="Về đầu trang"><ArrowUpRight /></a></div></footer>
-    {profileOpen && <Dialog close={closeProfile} title="Hồ sơ Nguyễn Chí Hải"><div className="identity-profile"><div className="identity-cover"><img src="/images/journey-university-capstone.jpg" alt="Nguyễn Chí Hải tại buổi bảo vệ đồ án Đại học FPT"/><div className="identity-cover-shade"/><span className="identity-brand">GUN<span>.</span></span><div className="identity-cover-caption"><span>FOOTBALL / BUSINESS / LIFE</span><p>Không ngừng học hỏi.<br/>Luôn giữ đam mê.</p></div></div><div className="identity-content"><p className="identity-kicker">HỒ SƠ CÁ NHÂN</p><h2>{profile.name}</h2><p className="identity-role">Kinh doanh tại FPT Telecom<br/>Coach bóng đá cộng đồng</p><div className="identity-meta"><span><CalendarDays size={15}/><time dateTime="2003-10-11">{profile.birthDate}</time></span><span><MapPin size={15}/>Cần Thơ</span></div><div className="identity-facts">{[{Icon:Trophy,label:'NỀN TẢNG',title:'6 năm tập luyện bóng đá',text:'CLB An Giang'},{Icon:GraduationCap,label:'HỌC VẤN',title:'Tốt nghiệp Đại học FPT Cần Thơ',text:'Ngành Kỹ thuật phần mềm'},{Icon:BriefcaseBusiness,label:'CÔNG VIỆC',title:'Kinh doanh',text:'FPT Telecom Cần Thơ'},{Icon:Users,label:'ĐAM MÊ',title:'Coach lớp bóng đá cộng đồng',text:'Đồng hành, hướng dẫn và truyền đam mê'}].map(({Icon,label,title,text}) => <div className="identity-fact" key={label}><span className="identity-icon"><Icon size={20}/></span><div><span className="identity-label">{label}</span><h3>{title}</h3><p>{text}</p></div></div>)}</div><div className="personal-socials"><a href={profile.contact.youtubeUrl} target="_blank" rel="noopener noreferrer"><Youtube size={18}/><span>YouTube</span><ArrowUpRight size={13}/></a><a href={profile.contact.facebookUrl} target="_blank" rel="noopener noreferrer"><Facebook size={18}/><span>Facebook</span><ArrowUpRight size={13}/></a><a href={profile.contact.tiktokUrl} target="_blank" rel="noopener noreferrer"><Music2 size={18}/><span>TikTok</span><ArrowUpRight size={13}/></a><a href={profile.contact.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={18}/><span>Instagram</span><ArrowUpRight size={13}/></a></div><div className="identity-actions"><a className="button" href={profile.contact.zaloUrl} target="_blank" rel="noopener noreferrer">Kết nối qua Zalo <ArrowUpRight size={16}/></a><a className="identity-call" href={`tel:${profile.contact.phone}`}><Phone size={16}/>{profile.contact.phoneFormatted}</a></div></div></div></Dialog>}
+    {profileOpen && <Dialog close={closeProfile} title="Hồ sơ Nguyễn Chí Hải"><div className="identity-profile"><div className="identity-cover"><img src="/images/journey-university-capstone.jpg" alt="Nguyễn Chí Hải tại buổi bảo vệ đồ án Đại học FPT"/><div className="identity-cover-shade"/><span className="identity-brand">GUN<span>.</span></span><div className="identity-cover-caption"><span>FOOTBALL / BUSINESS / LIFE</span><p>Không ngừng học hỏi.<br/>Luôn giữ đam mê.</p></div></div><div className="identity-content"><p className="identity-kicker">HỒ SƠ CÁ NHÂN</p><h2>{profile.name}</h2><p className="identity-role">Kinh doanh tại FPT Telecom<br/>Coach bóng đá cộng đồng</p><div className="identity-meta"><span><CalendarDays size={15}/><time dateTime="2003-10-11">{profile.birthDate}</time></span><span><MapPin size={15}/>Cần Thơ</span></div><div className="identity-facts">{[{Icon:Trophy,label:'NỀN TẢNG',title:'6 năm tập luyện bóng đá',text:'CLB An Giang'},{Icon:GraduationCap,label:'HỌC VẤN',title:'Tốt nghiệp Đại học FPT Cần Thơ',text:'Ngành Kỹ thuật phần mềm'},{Icon:BriefcaseBusiness,label:'CÔNG VIỆC',title:'Kinh doanh',text:'FPT Telecom Cần Thơ'},{Icon:Users,label:'ĐAM MÊ',title:'Coach lớp bóng đá cộng đồng',text:'Đồng hành, hướng dẫn và truyền đam mê'}].map(({Icon,label,title,text}) => <div className="identity-fact" key={label}><span className="identity-icon"><Icon size={20}/></span><div><span className="identity-label">{label}</span><h3>{title}</h3><p>{text}</p></div></div>)}</div><div className="personal-socials"><a href={profile.contact.youtubeUrl} target="_blank" rel="noopener noreferrer"><Youtube size={18}/><span>YouTube</span><ArrowUpRight size={13}/></a><a href={profile.contact.facebookUrl} target="_blank" rel="noopener noreferrer"><Facebook size={18}/><span>Facebook</span><ArrowUpRight size={13}/></a><a href={profile.contact.tiktokUrl} target="_blank" rel="noopener noreferrer"><Music2 size={18}/><span>TikTok</span><ArrowUpRight size={13}/></a><a href={profile.contact.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={18}/><span>Instagram</span><ArrowUpRight size={13}/></a></div><div className="identity-actions"><a className="button" href={profile.contact.zaloUrl} target="_blank" rel="noopener noreferrer">Kết nối qua Zalo <ArrowUpRight size={16}/></a><a className="identity-call" href={`tel:${profile.contact.phone}`}><Phone size={16}/>{profile.contact.phoneFormatted}</a></div><CvLinks/></div></div></Dialog>}
     {detail && <Dialog close={closeDetail} title={detail.title}><Photo name={detail.image} className="detail-image" /><div className="detail-body"><Label>{detail.category}</Label><h2>{detail.title}</h2>{detail.body.map((p, i) => <p key={i}>{p}</p>)}<a className="button" href={profile.contact.zaloUrl} target="_blank" rel="noreferrer">Kết nối với Hải <ArrowUpRight size={16} /></a></div></Dialog>}
-  </>;
+  </div>;
 }
-
-

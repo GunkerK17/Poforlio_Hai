@@ -1,0 +1,47 @@
+/* Visible pointer and scroll responses, shared across both pages. */
+.hero-portrait-motion { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.hero-portrait { filter: brightness(1.14) saturate(1.14) contrast(1.03); }
+.gun-scroll-progress { height: 3px; box-shadow: 0 0 20px #ff771b99; }
+.gun-pointer-light { position: fixed; top: 0; left: 0; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, #ff8b3025, #ff771b08 35%, transparent 68%); pointer-events: none; opacity: 0; z-index: 20; transition: opacity .4s; mix-blend-mode: screen; }
+.gun-pointer-light.pointer-light-visible { opacity: 1; }
+.gun-cursor { display: block; transition: opacity .2s; }
+.gun-cursor>span { display: grid; place-items: center; width: 42px; height: 42px; margin: -21px; border: 1px solid #ff8b35; box-shadow: 0 0 17px #ff771b30; background: #ff771b05; transition: width .25s, height .25s, margin .25s, background .25s, box-shadow .25s; }
+.gun-cursor>span::before { content: ''; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #ff771b; transition: opacity .2s; }
+.gun-cursor>span>svg { color: #ff9b52; opacity: 0; scale: .5; transition: opacity .2s, scale .25s; }
+.gun-cursor.cursor-active>span { width: 66px; height: 66px; margin: -33px; background: #ff771b14; border-color: #ff9a50; box-shadow: 0 0 25px #ff771b25; }
+.gun-cursor.cursor-active>span::before { opacity: 0; }
+.gun-cursor.cursor-active>span>svg { opacity: 1; scale: 1; }
+.motion-magnetic { translate: var(--magnet-x, 0px) var(--magnet-y, 0px); transition: translate .2s ease-out, background .2s, border-color .2s, box-shadow .2s, transform .25s !important; }
+.portfolio-app .motion-card[data-motion-card], .wl .motion-card[data-motion-card] { transform: perspective(1100px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translateY(var(--card-lift, 0px)); transition: transform .22s ease-out, box-shadow .3s, border-color .3s, opacity .8s var(--reveal-delay, 0ms), translate .8s var(--reveal-delay, 0ms), filter .8s var(--reveal-delay, 0ms); }
+.motion-card[data-motion-card]::after { content: ''; display: block; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(300px circle at var(--spot-x, 50%) var(--spot-y, 50%), #ff92351b, transparent 75%); opacity: 0; pointer-events: none; z-index: 3; transition: opacity .3s; }
+.motion-card[data-motion-card].card-pointer-active::after { opacity: 1; }
+.portfolio-app .motion-card[data-motion-card].card-pointer-active, .wl .motion-card[data-motion-card].card-pointer-active { border-color: #ff8b3566; box-shadow: 0 24px 50px #0004; }
+.motion-scroll-heading { position: relative; }
+.motion-scroll-heading::after { content: ''; position: absolute; bottom: -14px; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, #ff771b90, #ff771b0d); transform: scaleX(var(--scroll-fill, .1)); transform-origin: left; pointer-events: none; }
+.motion-scroll-photo { overflow: hidden; }
+.motion-scroll-photo>img, .motion-scroll-photo .photo>img { scale: 1.1; translate: 0 var(--image-scroll-shift, 0px); }
+.motion-reveal { translate: 0 44px; filter: blur(4px); transition: opacity .8s ease var(--reveal-delay, 0ms), translate .8s cubic-bezier(.2,.7,.2,1) var(--reveal-delay, 0ms), filter .8s ease var(--reveal-delay, 0ms); }
+.motion-reveal.motion-visible { translate: 0 0; filter: blur(0); }
+#football { scroll-margin-top: 48px; }
+.wifi-mini-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 22px 0; }
+.wifi-mini-plans>a { padding: 14px 12px; border: 1px solid #ff771b22; border-radius: 9px; background: #ff771b07; display: flex; flex-direction: column; align-items: flex-start; color: #d5c2ad; transition: background .2s, border-color .2s; min-width: 0; }
+.wifi-mini-plans>a:hover { background: #ff771b13; border-color: #ff771b66; }
+.wifi-mini-plans strong { font: 600 32px/1.1 'Outfit'; color: #ff8b35; letter-spacing: -1px; }
+.wifi-mini-plans strong>span { font-size: 17px; letter-spacing: 0; margin-left: 2px; }
+.wifi-mini-plans>a>span { font-size: 8px; line-height: 1.7; margin-top: 7px; }
+.wifi-mini-plans small { font-size: 7px; color: #a38d76; margin-top: 3px; }
+.gun-service-wifi .service-card-actions { margin-top: 25px; }
+@media(max-width:600px) {
+  .wifi-mini-plans { gap: 7px; }
+  .wifi-mini-plans>a { padding: 13px 8px; }
+  .wifi-mini-plans strong { font-size: 29px; }
+  .wifi-mini-plans>a>span { font-size: 7px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .gun-cursor, .gun-pointer-light { display: none; }
+  .motion-reveal { opacity: 1; translate: none; filter: none; }
+  .hero-portrait-motion, .portfolio-app .motion-card[data-motion-card], .wl .motion-card[data-motion-card] { transform: none!important; }
+  .motion-magnetic { translate: none!important; transition: none!important; }
+  .motion-scroll-photo>img, .motion-scroll-photo .photo>img { translate: none; scale: 1; }
+  .motion-scroll-heading::after { transform: none; }
+}

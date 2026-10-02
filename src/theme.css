@@ -1,0 +1,102 @@
+/* Shared palette, including body-mounted albums and project dialogs. */
+html[data-theme='light'] {
+  --gun-bg: #fffaf3; --gun-panel: #fff; --gun-line: #e5dbce;
+  --gun-text: #292720; --gun-muted: #6f685e; --gun-orange: #c85212;
+  --theme-surface: #f5eddf; --theme-header: #fffaf3ed; --theme-border: #e5dbce;
+}
+html[data-theme='dark'] {
+  --gun-bg: #101011; --gun-panel: #1b1b1d; --gun-line: #ffffff1a;
+  --gun-text: #f5f3ef; --gun-muted: #b6aea5; --gun-orange: #ff8a3c;
+  --theme-surface: #202022; --theme-header: #101011ed; --theme-border: #ffffff20;
+}
+html[data-theme] body { background: var(--gun-bg); color: var(--gun-text); }
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle { width: 44px; height: 44px; display: grid; place-items: center; flex-shrink: 0; border: 1px solid var(--theme-border); border-radius: 50%; color: var(--gun-text); background: var(--theme-surface); cursor: pointer; transition: border-color .25s, background .25s; }
+.theme-toggle:hover { border-color: var(--gun-orange); }
+.theme-toggle-icons { position: relative; display: block; width: 20px; height: 20px; overflow: hidden; }
+.theme-toggle-icons svg { position: absolute; inset: 0; margin: auto; transition: transform .4s, opacity .3s; }
+.theme-toggle .theme-sun { opacity: 0; transform: translateY(23px) rotate(90deg); }
+.theme-toggle .theme-moon { opacity: 1; transform: translateY(0); }
+[data-theme='dark'] .theme-toggle .theme-sun { opacity: 1; transform: translateY(0) rotate(0); }
+[data-theme='dark'] .theme-toggle .theme-moon { opacity: 0; transform: translateY(-23px) rotate(-45deg); }
+.portfolio-app .site-header, .portfolio-app .site-header.header-scrolled, .wl.wl-experience .wl-nav { background: var(--theme-header); border-color: var(--theme-border); }
+.portfolio-app .nav-inner { gap: 20px; }
+
+/* Portfolio in daylight: warm paper, readable ink and the original color portrait. */
+[data-theme='light'] .portfolio-app :is(.gun-hero, .gun-services, .jrn-section, .light, footer) { background: var(--gun-bg); color: var(--gun-text); border-color: var(--gun-line); }
+[data-theme='light'] .portfolio-app :is(.capabilities, .wifi-section, .contact) { background: var(--theme-surface); color: var(--gun-text); border-color: var(--gun-line); }
+[data-theme='light'] .portfolio-app :is(.gun-service-card, .jrn-card, .capability-grid article, .showcase-grid article, .wifi-section .wifi-panel, .hero-facts, .portrait-label) { background: var(--gun-panel); border-color: var(--gun-line); color: var(--gun-text); box-shadow: 0 14px 35px #634c1510; }
+[data-theme='light'] .portfolio-app :is(.brand, .brand-word, .hero-greeting strong, .hero-title-small, .hero-role, .portrait-label strong, .jrn-card h3, .showcase-open, .showcase-copy h3, .wifi-panel h3, .wifi-panel .wifi-options h4, .moment h3) { color: var(--gun-text); }
+[data-theme='light'] .portfolio-app :is(.brand-word small, .navigation a, .hero-location, .hero-greeting, .hero-description, .hero-social-row>span, .hero-facts p, .hero-facts strong span, .portrait-label small, .portrait-caption, .hero-bottom>a, .hero-bottom>span, .service-card-top>span:nth-child(2), .gun-service-card>p, .gun-service-card li, .service-text-link, .jrn-date, .jrn-header-note, .jrn-card-description, .jrn-card-bottom, .jrn-ending, .jrn-ending>span:last-child, .capability-grid p, .capability-grid li, .showcase-copy p, .wifi-copy>p:not(.eyebrow), .wifi-copy li, .wifi-panel p, .wifi-panel-label, .wifi-panel .wifi-note, .wifi-phone, .wifi-mini-plans>a, .wifi-mini-plans small, .contact p:not(.eyebrow), .contact-links>a:not(.button), .footer-inner p) { color: var(--gun-muted); }
+[data-theme='light'] .portfolio-app :is(.hero-facts strong, .capabilities-link, .showcase-actions, .back-top) { color: var(--gun-orange); }
+[data-theme='light'] .portfolio-app :is(.button.outline, .navigation .profile-nav, .gun-socials a, .personal-socials a, .filters button, .back-top) { background: var(--gun-panel); color: var(--gun-muted); border-color: var(--gun-line); }
+[data-theme='light'] .portfolio-app .filters button.active { background: var(--gun-orange); color: #fff; border-color: var(--gun-orange); }
+[data-theme='light'] .portfolio-app .button:not(.outline) { color: #fff; }
+[data-theme='light'] .portfolio-app .button:not(.outline):hover { background: #ad430d; }
+[data-theme='light'] .portfolio-app .navigation a.nav-active { color: var(--gun-orange); }
+[data-theme='light'] .portfolio-app :is(.hero-facts>div, .wifi-options, .showcase-actions, .jrn-ending) { border-color: var(--gun-line); }
+[data-theme='light'] .portfolio-app .hero-watermark { -webkit-text-stroke-color: #bf9d7133; }
+[data-theme='light'] .portfolio-app :is(.orbit-dashed, .orbit-track::before) { border-color: #bf9d7140; }
+[data-theme='light'] .portfolio-app .service-no { color: #c3ae93; }
+[data-theme='light'] .portfolio-app .service-football-shade { background: linear-gradient(100deg, #fffaf3f7, #fffaf3d4), linear-gradient(0deg, #fffaf3, transparent); }
+[data-theme='light'] .portfolio-app :is(.jrn-date>span:nth-child(2), .jrn-date i, .jrn-node) { background: var(--gun-bg); }
+[data-theme='light'] .portfolio-app .jrn-collage { background: var(--theme-surface); }
+[data-theme='light'] .portfolio-app .contact::after { background: linear-gradient(90deg, #f5eddfef, #f5eddfe6 60%, #f5eddfde); }
+[data-theme='light'] .portfolio-app .contact-background img { filter: saturate(.7); }
+[data-theme='light'] .portfolio-app .hero-portrait {
+  mix-blend-mode: normal;
+  mask-image: none;
+  filter: saturate(1.04) contrast(1.03) drop-shadow(0 12px 16px #674c2524);
+}
+[data-theme='light'] .portfolio-app .portrait-orbit {
+  background: radial-gradient(circle at 45% 35%, #f4ead9, #e8d7bd 65%, #e8d7bd00 73%);
+}
+[data-theme='light'] .portfolio-app :is(.showcase-actions a, .wifi-section .wifi-actions>a:not(.button), .showcase-pending) { color: var(--gun-orange); }
+[data-theme='light'] .portfolio-app .site-header .navigation.open { background: var(--theme-header); border-color: var(--gun-line); }
+[data-theme='light'] .portfolio-app .menu-toggle { color: var(--gun-text); }
+html[data-theme='light'] .gun-contact-dock { background: #fffaf3ee; color: #a84410; box-shadow: 0 8px 30px #634c1518; }
+[data-theme='light'] .gun-pointer-light { mix-blend-mode: multiply; background: radial-gradient(circle, #ffa24015, transparent 70%); }
+html[data-theme='light'] body:has(.portfolio-app) :is(.dialog, .dialog:has(.identity-profile), .work-dialog, .jrn-dialog, .jrn-album-header, .jrn-album-footer) { background: var(--gun-panel); color: var(--gun-text); border-color: var(--gun-line); }
+html[data-theme='light'] body:has(.portfolio-app) :is(.identity-profile, .identity-content h2, .identity-fact h3, .work-detail-copy h2, .jrn-album-story h2, .jrn-milestones h4) { color: var(--gun-text); }
+html[data-theme='light'] body:has(.portfolio-app) :is(.identity-role, .identity-fact p, .identity-meta>span, .identity-label, .identity-call, .detail-body>p:not(.eyebrow), .work-detail-copy>p:not(.eyebrow), .work-detail-links, .jrn-description, .jrn-milestones p, .jrn-album-story blockquote, .jrn-photo-caption, .jrn-gallery-note, .jrn-album-footer button) { color: var(--gun-muted); }
+html[data-theme='light'] body:has(.portfolio-app) :is(.identity-meta, .identity-actions, .jrn-milestones, .jrn-album-story blockquote) { border-color: var(--gun-line); }
+html[data-theme='light'] body:has(.portfolio-app) :is(.dialog .personal-socials a, .jrn-album-header button) { background: var(--theme-surface); color: var(--gun-text); border-color: var(--gun-line); }
+
+/* Wi-Fi after dark: retain white product materials against a charcoal showroom. */
+[data-theme='dark'] .wl.wl-experience { --paper: #101011; --ink: #f5f3ef; --orange: #ff8a3c; --accent: #ff8a3c; --muted: #b6aea5; --line: #ffffff1a; background: var(--paper); color: var(--ink); }
+[data-theme='dark'] .wl-experience :is(h1, h2, .wl-brand-lockup>span, .wf-quick-prices strong, .camera-options button strong, .camera-specs h3, .wf-plan h3, .wf-price>strong, .setup-steps h3, .footer-identity h2, .footer-location h3, .story-stage-foot p) { color: var(--ink); }
+[data-theme='dark'] .wl-experience :is(.wl-brand-lockup small, .wl-nav nav a, .wl-back, .wf-intro-text, .wf-phone, .wf-quick-prices a, .wf-quick-prices small, .wf-scroll-cue, .story-tabs button, .stage-top, .stage-hint, .stage-views button, .story-stage-foot small, .play-copy>p:not(.wl-kicker), .play-benefits span, .play-copy>small, .camera-head>p:last-child, .camera-arrows>span, .camera-options button small, .camera-specs>p:not(.wl-kicker), .camera-specs li, .camera-confirm>p, .camera-confirm>small, .camera-terms, .wf-head h2>span, .wf-monthly, .wf-plan-top>span:nth-child(2), .wf-price>span, .wf-plan li, .wf-details summary, .wf-details p, .setup-steps p, .wf-other p:not(.wl-kicker), .wf-bottom h2>span, .footer-identity p, .footer-description, .footer-location>div>p:not(.wl-kicker), .footer-source, .footer-end) { color: var(--muted); }
+[data-theme='dark'] .wl-experience :is(h1 em, h2 em, .wl-kicker, .story-tabs button[aria-pressed=true], .play-copy>p strong, .camera-head strong, .plan-camera-picked, .wf-plan-featured .wf-price>strong, .wf-details a, .footer-phone, .footer-zalo, .footer-end a) { color: var(--orange); }
+[data-theme='dark'] .wl-experience :is(.play-stage, .camera-view, .wf-plan, .wf-details, .wf-other-links a, .camera-options button, .camera-confirm) { background: var(--gun-panel); border-color: var(--line); color: var(--ink); }
+[data-theme='dark'] .wl.wl-experience .wf-plan.wf-plan-featured { background: linear-gradient(145deg, #38251c, #1b1b1d); border-color: #ff8a3c80; }
+[data-theme='dark'] .wl-experience :is(.camera-options button[aria-pressed=true], .stage-views button[aria-pressed=true], .stage-views button:hover) { background: #ff8a3c18; border-color: #ff8a3c65; color: var(--orange); }
+[data-theme='dark'] .wl-experience :is(.stage-reset, .stage-touch, .story-arrows button, .camera-arrows button) { border-color: #ff8a3c45; color: var(--orange); }
+[data-theme='dark'] .wl-experience :is(.story-arrows button:last-child, .camera-arrows button:last-child, .wf-btn, .wl-nav-cta) { background: var(--orange); border-color: var(--orange); color: #211208; }
+[data-theme='dark'] .wl-experience .wf-plan .wf-btn { background: #ff8a3c12; color: var(--orange); border-color: #ff8a3c45; }
+[data-theme='dark'] .wl-experience .wf-plan-featured .wf-btn { background: var(--orange); color: #211208; }
+[data-theme='dark'] .wl.wl-experience .wf-plan .wf-plan-icon { background: #ff8a3c14; border-color: #ff8a3c45; color: var(--orange); }
+[data-theme='dark'] .wl.wl-experience .wf-quick-prices { border-color: var(--line); }
+[data-theme='dark'] .wl-experience :is(.wf-plan ul, .wf-details>div, .wf-monthly, .camera-arrows, .footer-end, .footer-map) { border-color: var(--line); }
+[data-theme='dark'] .wl-experience .stage-viewport::before { background: radial-gradient(circle at 40% 30%, #52372360, #ff8a3c0c 72%, transparent); }
+[data-theme='dark'] .wl-experience .stage-word { color: #ffb77716; }
+[data-theme='dark'] .wl-experience :is(.stage-orbit, .stage-orbit::after) { border-color: #ffba7720; }
+[data-theme='dark'] .wl-experience :is(.stage-caption, .stage-fallback span) { background: #222022ce; color: #d4c5b5; border-color: #ffffff18; }
+[data-theme='dark'] .wl-experience .camera-confirm.has-selection { background: #233022; border-color: #648659; }
+[data-theme='dark'] .wl-experience :is(.camera-confirm>span, .copy-request) { color: #afd79a; }
+[data-theme='dark'] .wl-experience .wf-details p strong { color: var(--ink); }
+[data-theme='dark'] .wl-experience .setup-steps>div>span { color: #746454; }
+[data-theme='dark'] .wl-experience .wf-bottom { background: linear-gradient(110deg, #38251c, #201b18); border-color: #ff8a3c40; }
+[data-theme='dark'] .wl-experience .experience-footer { background: #161517; border-color: var(--line); }
+[data-theme='dark'] .wl-experience .footer-identity img { border-color: #ffffff20; }
+[data-theme='dark'] .wl-experience .gun-socials a { background: var(--gun-panel); color: #e4cdb4; border-color: var(--line); }
+[data-theme='dark'] .wl-experience .gun-socials a:hover { color: var(--orange); border-color: var(--orange); }
+[data-theme='dark'] .wl-experience .footer-map>a { background: #222022ef; border-color: var(--line); color: var(--orange); }
+[data-theme='dark'] .wl-experience .gun-pointer-light { mix-blend-mode: screen; }
+[data-theme='dark'] .wl-experience .gun-contact-dock { background: #211b16ee; color: #e7d4bf; box-shadow: 0 8px 30px #0004; }
+/* Small explanatory text keeps sufficient contrast on the ivory background. */
+[data-theme='light'] .wl-experience :is(.wl-brand-lockup small, .stage-top, .stage-hint, .stage-views button, .stage-caption, .story-stage-foot small, .play-copy>small, .camera-options button small, .camera-specs>p:not(.wl-kicker), .camera-specs li, .camera-confirm>p, .camera-confirm>small, .camera-terms, .wf-plan li, .wf-price>span, .wf-quick-prices small, .wf-plan-top>span:nth-child(2), .setup-steps p, .footer-identity p, .footer-description, .footer-location>div>p:not(.wl-kicker), .footer-source, .footer-end) { color: #74654f; }
+[data-theme='light'] .wl-experience .camera-confirm>span, [data-theme='light'] .wl-experience .copy-request { color: #49653a; }
+@media(max-width:1100px) and (min-width:801px) { .portfolio-app .navigation { gap: 13px; } .portfolio-app .nav-inner { gap: 12px; } }
+@media(max-width:600px) { .header-actions { gap: 6px; } .portfolio-app .nav-inner { gap: 8px; } }
+@media(max-width:350px) { .portfolio-app .nav-contact { display: none; } .wl-experience .header-actions { gap: 5px; } .wl-experience .wl-nav-cta { padding-inline: 10px; font-size: 10px; } }
+@media(prefers-reduced-motion:reduce) { .theme-toggle, .theme-toggle-icons svg { transition: none; } }

@@ -1,0 +1,464 @@
+/* GUN: charcoal, orange and a motion language shared by the portfolio. */
+:root { --gun-bg: #101011; --gun-panel: #19191b; --gun-line: #ffffff14; --gun-text: #f5f3ef; --gun-muted: #a5a3a0; --gun-orange: #ff771b; }
+html { scroll-padding-top: 108px; }
+body:has(.portfolio-app) { background: var(--gun-bg); color: var(--gun-text); }
+.portfolio-app { --orange: var(--gun-orange); --paper: #151516; --ink: var(--gun-text); background: var(--gun-bg); color: var(--gun-text); overflow: clip; }
+.portfolio-app .wrap, .portfolio-app .jrn-wrap { width: min(1200px, calc(100% - 96px)); }
+.portfolio-app h2 { font-size: clamp(30px, 3.4vw, 47px); font-weight: 700; line-height: 1.3; letter-spacing: -1.8px; }
+.portfolio-app .section, .portfolio-app .jrn-section { padding: 100px 0; }
+.portfolio-app .section-heading { margin-bottom: 42px; gap: 32px; }
+.portfolio-app .eyebrow, .portfolio-app .jrn-header .jrn-kicker { font: 600 11px/1.7 'Be Vietnam Pro', sans-serif; letter-spacing: 1.8px; color: var(--gun-orange); margin-bottom: 18px; }
+.portfolio-app .section-note { font-size: 13px; color: var(--gun-muted); line-height: 1.9; max-width: 320px; }
+.portfolio-app .button { border-radius: 8px; font-size: 12px; font-weight: 650; min-height: 48px; padding: 14px 22px; background: var(--gun-orange); border-color: var(--gun-orange); color: #15100b; box-shadow: inset 0 1px 0 #ffffff25; transition: transform .25s, background .25s, box-shadow .25s; }
+.portfolio-app .button:hover { background: #ff8c3e; box-shadow: 0 7px 28px #ff771b25; transform: translateY(-3px); }
+.portfolio-app .button svg { transition: transform .25s; flex-shrink: 0; }
+.portfolio-app .button:hover svg { transform: translate(2px, -2px); }
+.portfolio-app .button.outline { background: #ffffff03; color: #dedbd7; border-color: #ffffff30; box-shadow: none; }
+.portfolio-app .button.outline:hover { border-color: var(--gun-orange); background: #ff771b0c; }
+.skip-link { position: fixed; top: -100px; left: 20px; z-index: 200; padding: 15px; background: var(--gun-orange); color: #101011; border-radius: 8px; }
+.skip-link:focus { top: 12px; }
+.portfolio-app .site-header { position: fixed; top: 0; left: 0; right: 0; background: #101011bb; backdrop-filter: blur(16px); border-bottom: 1px solid #ffffff0b; transition: background .3s, box-shadow .3s; }
+.portfolio-app .site-header.header-scrolled { background: #101011ed; box-shadow: 0 8px 30px #0002; }
+.portfolio-app .nav-inner { height: 86px; gap: 28px; transition: height .3s; }
+.portfolio-app .header-scrolled .nav-inner { height: 74px; }
+.portfolio-app .brand-lockup .brand-word { font-size: 32px; font-style: normal; letter-spacing: -1.6px; }
+.portfolio-app .brand-word .brand-period { color: var(--gun-orange); }
+.portfolio-app .brand-word small { font: 500 6px/1.7 'Be Vietnam Pro'; letter-spacing: 2px; color: #c0bbb3; margin-top: 1px; }
+.portfolio-app .navigation { gap: 25px; }
+.portfolio-app .navigation a { color: #aaa7a3; font-size: 12px; position: relative; }
+.portfolio-app .navigation a::after { content: ''; position: absolute; height: 2px; left: 0; right: 0; bottom: 1px; background: var(--gun-orange); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.portfolio-app .navigation a:hover, .portfolio-app .navigation a.nav-active { color: var(--gun-orange); }
+.portfolio-app .navigation a:hover::after, .portfolio-app .navigation a.nav-active::after { transform: scaleX(1); }
+.portfolio-app .navigation .profile-nav { color: #d1cdc5; background: #ffffff05; border: 1px solid #ffffff16; border-radius: 7px; box-shadow: none; font-size: 11px; padding: 8px 11px; display: flex; align-items: center; gap: 7px; }
+.portfolio-app .navigation .profile-nav:hover { border-color: #ff771b80; }
+.portfolio-app .nav-contact { font-size: 11px; padding: 10px 18px; min-height: 40px; }
+
+/* Hero: large typography, portrait orbit and a quiet interactive depth. */
+.gun-hero { padding-top: 124px; position: relative; isolation: isolate; overflow: hidden; background: radial-gradient(ellipse at 86% 25%, #ff771b06, transparent 55%), #101011; }
+.gun-hero-grid { display: grid; grid-template-columns: 1.08fr 1fr; gap: 36px; align-items: center; min-height: 670px; position: relative; z-index: 1; }
+.gun-hero-copy { padding: 40px 0 30px; position: relative; z-index: 3; }
+.hero-location { display: flex; gap: 8px; align-items: center; color: #a7a39d; font-size: 9px; font-weight: 550; letter-spacing: 1.8px; margin-bottom: 30px; }
+.hero-location .status-dot { width: 5px; height: 5px; background: var(--gun-orange); box-shadow: 0 0 0 4px #ff771b15; margin-right: 5px; animation: statusPulse 3s ease-in-out infinite; }
+.hero-location svg { color: var(--gun-orange); }
+.hero-greeting { color: #9c9995; font-size: 15px; margin-bottom: 16px; }
+.hero-greeting strong { font-weight: 550; color: #e4dfd8; }
+.hero-title-small { display: block; font: 550 clamp(20px, 2.25vw, 30px)/1.5 'Be Vietnam Pro'; color: #d7d3cc; letter-spacing: -.6px; }
+.hero-name { display: flex; color: var(--gun-orange); font: 800 clamp(96px, 10.8vw, 150px)/1 'Outfit', sans-serif; letter-spacing: -7px; margin: 3px 0 11px; }
+.hero-name>span { display: inline-block; }
+.hero-role { color: #e0dbd4; font-size: 13px; font-weight: 550; margin-bottom: 18px; }
+.hero-role>span { color: var(--gun-orange); margin: 0 8px; }
+.hero-description { color: #a4a19b; max-width: 475px; font-size: 14px; line-height: 1.9; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 27px; }
+.hero-social-row { display: flex; align-items: center; gap: 18px; margin: 25px 0 31px; }
+.hero-social-row>span { font-size: 8px; color: #a19c95; letter-spacing: 1.6px; }
+.gun-socials { display: flex; flex-wrap: wrap; gap: 9px; }
+.gun-socials a { display: flex; align-items: center; gap: 10px; border: 1px solid #ffffff20; background: #ffffff04; color: #d5d0c9; min-height: 44px; padding: 10px 13px; border-radius: 8px; font-size: 12px; transition: color .2s, border-color .2s, transform .3s; }
+.gun-socials a:hover { transform: translateY(-3px); color: var(--gun-orange); border-color: var(--gun-orange); }
+.gun-socials-compact a { width: 36px; height: 36px; min-height: 36px; border-radius: 50%; padding: 0; justify-content: center; }
+.gun-socials-compact span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.hero-facts { display: grid; grid-template-columns: repeat(3, 1fr); padding: 22px 20px; background: linear-gradient(120deg, #ffffff07, #ffffff02); border: 1px solid #ffffff0a; border-radius: 10px; max-width: 505px; }
+.hero-facts>div { padding: 0 16px; border-left: 1px solid #ffffff18; }
+.hero-facts>div:first-child { padding-left: 0; border-left: 0; }
+.hero-facts>div:last-child { padding-right: 0; }
+.hero-facts svg { color: var(--gun-orange); margin-bottom: 10px; }
+.hero-facts strong { display: flex; gap: 5px; align-items: baseline; font: 650 25px 'Outfit'; color: #efc6a8; }
+.hero-facts strong span { font: 500 9px 'Be Vietnam Pro'; color: #b6a28f; }
+.hero-facts p { font-size: 9px; color: #a6a099; margin-top: 6px; line-height: 1.8; }
+.hero-portrait-stage { height: 675px; position: relative; min-width: 0; }
+.hero-portrait { position: absolute; bottom: 19px; left: 0; width: 100%; height: 660px; object-fit: contain; mix-blend-mode: screen; filter: grayscale(1) contrast(1.12); z-index: 2; pointer-events: none; mask-image: linear-gradient(#000 82%, transparent 100%); }
+.hero-watermark { position: absolute; top: -15px; right: 15px; font: 700 250px/.9 'Outfit'; letter-spacing: -20px; color: transparent; -webkit-text-stroke: 1px #ffffff0c; }
+.portrait-orbit { position: absolute; width: 94%; aspect-ratio: 1; top: 122px; left: 3%; background: radial-gradient(circle, #ff771b0a 0%, #ffffff02 60%, transparent 71%); border-radius: 50%; }
+.orbit-track { position: absolute; inset: 0; border: 1px solid #ff771b40; border-radius: 50%; }
+.orbit-track::before { content: ''; position: absolute; inset: 16px; border: 1px solid #ffffff07; border-radius: 50%; }
+.orbit-dashed { position: absolute; inset: -24px; border: 1px dashed #ffffff18; border-radius: 50%; animation: orbitSpin 80s linear infinite; }
+.orbit-dot { position: absolute; inset: 0; animation: orbitSpin 18s linear infinite; }
+.orbit-dot::after { content: ''; position: absolute; top: 50%; left: -5px; width: 9px; height: 9px; background: var(--gun-orange); border-radius: 50%; box-shadow: 0 0 24px #ff771b88; }
+.portrait-label { position: absolute; display: flex; gap: 12px; align-items: center; background: #1c1b1bec; backdrop-filter: blur(16px); padding: 14px 17px; border: 1px solid #ffffff16; border-radius: 10px; box-shadow: 0 20px 55px #0004; z-index: 3; }
+.portrait-label small { display: block; color: #aaa098; font-size: 7px; letter-spacing: 1.2px; margin-bottom: 5px; }
+.portrait-label strong { font-size: 11px; font-weight: 550; color: #e7dfd6; }
+.portrait-label-icon { width: 36px; height: 36px; display: grid; place-items: center; background: #ff771b11; color: var(--gun-orange); border: 1px solid #ff771b20; border-radius: 8px; }
+.portrait-label-top { top: 142px; right: -10px; animation: floatLabel 6s ease-in-out infinite; }
+.portrait-label-bottom { bottom: 113px; left: -8px; animation: floatLabel 7s ease-in-out infinite reverse; }
+.portrait-label-bottom>svg { color: var(--gun-orange); margin-left: 7px; }
+.portrait-caption { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; color: #7c756e; letter-spacing: 1.4px; font-size: 7px; z-index: 3; }
+.portrait-caption>span { color: var(--gun-orange); margin: 0 5px; }
+.hero-ambient { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.hero-ambient>span:first-child { position: absolute; width: 550px; height: 550px; top: 20%; left: -380px; background: radial-gradient(circle, #ff771b10, transparent 70%); animation: ambientMove 12s ease-in-out infinite alternate; }
+.hero-ambient>span:last-child { position: absolute; top: 0; right: 12%; height: 100%; width: 1px; background: linear-gradient(transparent, #ff771b18, transparent); transform: rotate(23deg); }
+.hero-bottom { display: flex; align-items: center; justify-content: space-between; padding: 23px 0 32px; position: relative; z-index: 1; }
+.hero-bottom>a { color: #a09b94; display: flex; gap: 12px; align-items: center; font-size: 9px; }
+.hero-bottom>a>svg { color: var(--gun-orange); }
+.hero-bottom>span { color: #857e75; font-size: 8px; letter-spacing: 1.7px; display: flex; gap: 15px; align-items: center; }
+.tiny-star { color: var(--gun-orange); font-size: 22px; animation: orbitSpin 20s linear infinite; }
+.scroll-mouse { display: block; position: relative; width: 17px; height: 27px; border: 1px solid #72665b; border-radius: 12px; }
+.scroll-mouse i { position: absolute; width: 2px; height: 5px; background: var(--gun-orange); border-radius: 5px; left: 6px; top: 5px; animation: scrollTick 2s infinite; }
+
+/* The two primary visitor paths are visible before the personal journey. */
+.gun-services { background: #131314; }
+.gun-services h2 span { color: #a09a93; }
+.gun-service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gun-service-card { position: relative; isolation: isolate; overflow: hidden; min-width: 0; padding: 35px; border: 1px solid #ffffff14; border-radius: 16px; background: #1a1919; }
+.service-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.service-icon { display: grid; place-items: center; width: 49px; height: 49px; color: var(--gun-orange); background: #ff771b0d; border: 1px solid #ff771b22; border-radius: 12px; flex-shrink: 0; }
+.service-card-top>span:nth-child(2) { font-size: 8px; letter-spacing: 1.1px; color: #baaa9c; }
+.service-no { font: 400 29px 'Outfit'; color: #ffffff25; margin-left: auto; }
+.gun-service-card h3 { font-size: clamp(23px, 2.3vw, 31px); line-height: 1.45; font-weight: 650; letter-spacing: -.9px; }
+.gun-service-card h3>span { color: var(--gun-orange); }
+.gun-service-card>p:not(.service-footnote) { font-size: 13px; line-height: 1.9; color: #c0b5aa; margin-top: 19px; max-width: 425px; }
+.gun-service-card ul { padding: 0; margin: 24px 0 28px; list-style: none; display: grid; gap: 13px; }
+.gun-service-card li { display: flex; gap: 10px; align-items: flex-start; font-size: 11px; color: #ded4c9; line-height: 1.8; }
+.gun-service-card li svg { color: var(--gun-orange); flex-shrink: 0; margin-top: 2px; }
+.service-card-actions { display: flex; gap: 19px; align-items: center; flex-wrap: wrap; }
+.service-text-link { font-size: 11px; color: #e6d6c8; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; }
+.service-text-link:hover { color: var(--gun-orange); }
+.service-footnote { color: #b2a79e; font-size: 10px; margin-top: 18px; line-height: 1.8; }
+.service-signal { position: absolute; right: -75px; top: -10px; width: 260px; height: 170px; z-index: -1; opacity: .18; transform: rotate(-25deg); }
+.service-signal path { stroke: var(--gun-orange); stroke-width: 2; stroke-dasharray: 500; animation: signalDraw 5s ease-in-out infinite; }
+.service-signal circle { fill: var(--gun-orange); }
+.service-football-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -3; opacity: .48; filter: saturate(.4); transition: transform .8s; }
+.service-football-shade { position: absolute; inset: 0; background: linear-gradient(100deg, #141313f5, #141313b0), linear-gradient(0deg, #141313, transparent 90%); z-index: -2; }
+.gun-service-football:hover .service-football-image { transform: scale(1.06); }
+#football { scroll-margin-top: 32px; }
+
+/* Existing journey and projects keep their albums and original data. */
+.portfolio-app .jrn-section { background: #101011; color: var(--gun-text); border-top: 1px solid #ffffff08; }
+.portfolio-app .jrn-header h2 { font-size: clamp(30px, 3.4vw, 47px); font-weight: 700; line-height: 1.3; }
+.portfolio-app .jrn-header h2 em { color: var(--gun-orange); }
+.portfolio-app .jrn-intro>p { color: var(--gun-muted); font-size: 13px; }
+.portfolio-app .jrn-small-line { background: var(--gun-orange); }
+.portfolio-app .jrn-header-note { color: #c3b5a5; }
+.portfolio-app .jrn-timeline { gap: 24px; }
+.portfolio-app .jrn-timeline::before { background: linear-gradient(90deg, #ff771b90, #ffffff12); }
+.portfolio-app .jrn-date { color: #c8b8a6; }
+.portfolio-app .jrn-date>span:nth-child(2), .portfolio-app .jrn-date i, .portfolio-app .jrn-node { background: #101011; }
+.portfolio-app .jrn-date i { color: var(--gun-orange); }
+.portfolio-app .jrn-node { border-color: #ff771b80; }
+.portfolio-app .jrn-node::after { background: var(--gun-orange); }
+.portfolio-app .jrn-card { border: 1px solid #ffffff14; border-radius: 12px; background: #19191b; color: var(--gun-text); box-shadow: none; }
+.portfolio-app .jrn-collage { height: 255px; background: #1c1b1b; }
+.portfolio-app .jrn-cover { filter: saturate(.65); }
+.portfolio-app .jrn-snapshots img { border-color: #d5c6b5; }
+.portfolio-app .jrn-photo-count { background: #141313b0; }
+.portfolio-app .jrn-card-body { padding: 25px; }
+.portfolio-app .jrn-card h3 { font-size: 21px; font-weight: 600; }
+.portfolio-app .jrn-card-description { color: #a8a098; }
+.portfolio-app .jrn-card-bottom { border-color: var(--gun-line); color: #b5a492; font-size: 10px; }
+.portfolio-app .jrn-open { background: #ff771b0c; color: var(--gun-orange); border: 1px solid #ff771b22; }
+.portfolio-app .jrn-ending { border-color: var(--gun-line); color: #bbb1a6; margin-top: 38px; }
+.portfolio-app .jrn-ending>span:last-child { color: #8b8379; }
+.portfolio-app .jrn-ending-dot { background: var(--gun-orange); }
+.portfolio-app .capabilities { background: #151516; border-block: 1px solid #ffffff08; }
+.portfolio-app .capabilities-link { color: #dca576; font-size: 12px; }
+.portfolio-app .capability-grid { gap: 18px; }
+.portfolio-app .capability-grid article { padding: 27px 23px; background: #1c1c1d; border: 1px solid #ffffff0e; border-radius: 10px; position: relative; overflow: hidden; }
+.portfolio-app .capability-grid article::before { content: ''; position: absolute; inset: auto 0 0; height: 2px; background: var(--gun-orange); transform: scaleX(0); transform-origin: left; transition: transform .45s; }
+.portfolio-app .capability-grid article:hover::before { transform: scaleX(1); }
+.portfolio-app .capability-number { color: var(--gun-orange); font: 500 25px 'Outfit'; }
+.portfolio-app .capability-grid h3 { font-size: 20px; margin: 17px 0 12px; font-weight: 600; }
+.portfolio-app .capability-grid p { font-size: 12px; color: #a9a39d; }
+.portfolio-app .capability-grid li { font-size: 10px; color: #cbc4bc; align-items: flex-start; }
+.portfolio-app .capability-grid li svg { color: var(--gun-orange); }
+.portfolio-app .light { background: #101011; color: var(--gun-text); }
+.portfolio-app .showcase-intro { color: var(--gun-muted); font-size: 13px; }
+.portfolio-app .showcase-grid { gap: 19px; }
+.portfolio-app .showcase-grid article { background: #1a1a1c; border: 1px solid #ffffff12; border-radius: 11px; }
+.portfolio-app .showcase-open { color: var(--gun-text); background: transparent; }
+.portfolio-app .showcase-photo { height: 195px; }
+.portfolio-app .showcase-photo img { filter: saturate(.65); transition: filter .5s, transform .7s; }
+.portfolio-app .showcase-grid article:hover img { filter: saturate(1); transform: scale(1.07); }
+.portfolio-app .showcase-copy { padding: 21px; }
+.portfolio-app .showcase-copy h3 { font-size: 17px; font-weight: 600; }
+.portfolio-app .showcase-copy p { color: #aaa199; font-size: 11px; line-height: 1.9; }
+.portfolio-app .showcase-actions { border-color: var(--gun-line); color: #dbb18d; }
+.portfolio-app .showcase-photo span { background: #171615dd; border: 1px solid #ffffff18; color: #eac9a7; font-size: 8px; }
+.portfolio-app .wifi-section { background: radial-gradient(ellipse at 90% 40%, #39221765, transparent 65%), #151414; border-block: 1px solid #ffffff09; padding: 100px 0; color: var(--gun-text); }
+.portfolio-app .wifi-copy h2 span { color: var(--gun-orange); }
+.portfolio-app .wifi-section .wifi-copy>.eyebrow { color: var(--gun-orange); font-size: 11px; letter-spacing: 1.8px; }
+.portfolio-app .wifi-copy>p:not(.eyebrow) { color: #b3aaa1; line-height: 1.9; }
+.portfolio-app .wifi-copy li { font-size: 12px; color: #d4c7b9; }
+.portfolio-app .wifi-copy li svg { color: var(--gun-orange); }
+.portfolio-app .wifi-section .wifi-panel { background: linear-gradient(135deg, #262320, #1b1918); border: 1px solid #ffffff20; box-shadow: 0 20px 70px #0003; color: #f0e7de; }
+.portfolio-app .wifi-panel h3, .portfolio-app .wifi-panel .wifi-options h4 { color: #f0e7de; }
+.portfolio-app .wifi-panel p, .portfolio-app .wifi-panel .wifi-note { color: #bfb0a1; }
+.portfolio-app .wifi-panel-label { color: #bc9a7b; }
+.portfolio-app .wifi-symbol { color: var(--gun-orange); background: #ff771b0c; border-color: #ff771b25; }
+.portfolio-app .wifi-options>div { background: #ffffff04; border-color: #ffffff0e; color: var(--gun-orange); }
+.portfolio-app .wifi-poster-mini { background: #ded2c3; }
+.portfolio-app .wifi-options>div>svg { color: var(--gun-orange); }
+.portfolio-app .wifi-actions { gap: 12px 18px; }
+.portfolio-app .wifi-actions .button { font-size: 11px; }
+.portfolio-app .wifi-actions .button:nth-child(2) { background: transparent; border-color: #ffffff30; color: #e5d7c7; }
+.portfolio-app .wifi-phone { font-size: 13px; color: #d5c2af; }
+.portfolio-app .filters button { background: #1b1b1c; border-color: #ffffff15; color: #b9b2a9; font-size: 10px; border-radius: 7px; }
+.portfolio-app .filters button.active { color: #17120e; border-color: var(--gun-orange); background: var(--gun-orange); }
+.portfolio-app .moments-grid { gap: 22px; }
+.portfolio-app .moment-image { height: 230px; border-radius: 10px; border: 1px solid #ffffff0d; }
+.portfolio-app .moment-category { color: #df9b63; margin: 17px 0 9px; font-size: 9px; }
+.portfolio-app .moment h3 { color: #e0d7cc; font-weight: 500; font-size: 14px; line-height: 1.7; }
+.portfolio-app .contact { background: #191615; padding: 95px 0; }
+.portfolio-app .contact::after { background: linear-gradient(90deg, #191615fc, #191615eb 60%, #191615e6); }
+.portfolio-app .contact-background img { filter: grayscale(1) brightness(.45); }
+.portfolio-app .contact h2 { font-size: clamp(34px, 4.4vw, 60px); line-height: 1.3; }
+.portfolio-app .contact h2 span { color: var(--gun-orange); }
+.portfolio-app .contact p:not(.eyebrow) { color: #b1a69a; font-size: 13px; line-height: 1.9; }
+.portfolio-app .contact-links { max-width: 480px; gap: 19px; }
+.portfolio-app .contact-links>a:not(.button) { color: #c8b8a7; font-size: 13px; }
+.portfolio-app .personal-socials a { background: #ffffff03; border: 1px solid #ffffff18; color: #d5c7b8; border-radius: 7px; transition: color .2s, transform .3s, border-color .3s; }
+.portfolio-app .personal-socials a:hover { color: var(--gun-orange); border-color: #ff771b80; background: #ff771b06; }
+.portfolio-app footer { background: #101011; color: #93887b; padding: 34px 0; border-top: 1px solid #ffffff0e; }
+.portfolio-app .footer-inner p { font-size: 10px; }
+.portfolio-app .back-top { border-color: #ffffff20; background: #ffffff03; width: 44px; height: 44px; border-radius: 7px; color: #c9a789; }
+.portfolio-app .back-top:hover { color: var(--gun-orange); border-color: var(--gun-orange); }
+
+/* Overlay styles also apply to dialogs mounted through a React portal. */
+body:has(.portfolio-app) .dialog, body:has(.portfolio-app) .work-dialog, body:has(.portfolio-app) .jrn-dialog { background: #19191b; color: #eee6dc; border: 1px solid #ffffff22; box-shadow: 0 40px 120px #0009; }
+body:has(.portfolio-app) .dialog:has(.identity-profile) { background: #19191b; border-color: #ffffff22; }
+body:has(.portfolio-app) .identity-profile { color: #eee6dc; }
+body:has(.portfolio-app) .identity-role, body:has(.portfolio-app) .identity-fact p, body:has(.portfolio-app) .identity-meta>span, body:has(.portfolio-app) .identity-label { color: #aaa095; }
+body:has(.portfolio-app) .identity-meta, body:has(.portfolio-app) .identity-actions { border-color: #ffffff12; }
+body:has(.portfolio-app) .identity-icon { background: #ff771b0c; color: var(--gun-orange); }
+body:has(.portfolio-app) .identity-call { color: #d3baa0; }
+body:has(.portfolio-app) .identity-kicker, body:has(.portfolio-app) .detail-body .eyebrow, body:has(.portfolio-app) .work-detail-copy .eyebrow { color: var(--gun-orange); }
+body:has(.portfolio-app) .dialog .personal-socials a { background: #ffffff04; color: #dac5b0; border-color: #ffffff20; }
+body:has(.portfolio-app) .detail-body>p:not(.eyebrow), body:has(.portfolio-app) .work-detail-copy>p:not(.eyebrow), body:has(.portfolio-app) .work-detail-links { color: #b8aa9b; }
+body:has(.portfolio-app) .jrn-album-header, body:has(.portfolio-app) .jrn-album-footer { background: #201f1e; border-color: #ffffff14; color: #c3b29e; }
+body:has(.portfolio-app) .jrn-album-header button { background: #ffffff07; color: #e3d1bc; border-color: #ffffff20; }
+body:has(.portfolio-app) .jrn-description, body:has(.portfolio-app) .jrn-milestones p, body:has(.portfolio-app) .jrn-album-story blockquote, body:has(.portfolio-app) .jrn-photo-caption, body:has(.portfolio-app) .jrn-gallery-note { color: #b0a394; }
+body:has(.portfolio-app) .jrn-milestones, body:has(.portfolio-app) .jrn-album-story blockquote { border-color: #ffffff14; }
+body:has(.portfolio-app) .jrn-milestones li::before { background: var(--gun-orange); box-shadow: 0 0 0 4px #19191b; }
+body:has(.portfolio-app) .jrn-album-footer button { color: #d4baa0; }
+body:has(.portfolio-app) .jrn-viewer { background: #101011; }
+body:has(.portfolio-app) .jrn-kicker, body:has(.portfolio-app) .jrn-milestones li>span { color: var(--gun-orange); }
+body:has(.portfolio-app) .work-dialog .button, body:has(.portfolio-app) .jrn-dialog .button { border-radius: 8px; background: var(--gun-orange); border-color: var(--gun-orange); color: #15100b; }
+
+/* Motion is progressive: content remains visible when effects are disabled. */
+body:has(.wl) { background: var(--gun-bg); }
+.wl { --accent: var(--gun-orange); background: #101011; color: var(--gun-text); }
+.wl .wl-nav { position: sticky; top: 0; z-index: 30; background: #101011ed; backdrop-filter: blur(16px); border-color: #ffffff12; }
+.wl .wl-nav nav a { color: #bcb0a1; }
+.wl .wl-nav nav a:hover { color: var(--gun-orange); }
+.wl .wl-nav-cta { border-radius: 8px; background: var(--gun-orange); border-color: var(--gun-orange); color: #17120e; font-weight: 600; }
+.wl .wl-back { color: #b6a493; }
+.wl .wl-kicker, .wl .wl-pricing .wl-kicker, .wl .wl-final .wl-kicker { color: var(--gun-orange); }
+.wl h1 em { color: var(--gun-orange); }
+.wl .wl-hero-copy>p:not(.wl-kicker), .wl .wl-benefit p, .wl .wl-process p, .wl .wl-faq details p { color: #b1a89d; }
+.wl .wl-btn { border-radius: 8px; background: var(--gun-orange); color: #17120e; border: 1px solid var(--gun-orange); }
+.wl .wl-btn:hover { background: #ff8a3b; box-shadow: 0 10px 28px #ff771b20; }
+.wl .wl-text-link { color: #d0bda6; }
+.wl .wl-hero-stats { border-color: #ffffff18; }
+.wl .wl-hero-stats span { color: #a69b8e; }
+.wl .wl-hero-stats b { color: #ead5bc; }
+.wl .wl-visual>img { border: 5px solid #34302b; border-radius: 20px; box-shadow: 0 30px 70px #0006; }
+.wl .wl-orbit { border-color: #ff771b30; animation: orbitSpin 70s linear infinite; }
+.wl .wl-float { background: #201c18ef; border-color: #ffffff20; color: #e4d4c1; border-radius: 10px; }
+.wl .wl-float b { color: var(--gun-orange); }
+.wl .wl-pricing { background: #161516; border-block: 1px solid #ffffff0d; }
+.wl .wl-switch { border-radius: 9px; background: #ffffff04; border-color: #ffffff20; }
+.wl .wl-switch button { border-radius: 6px; color: #c6b7a6; }
+.wl .wl-switch button[aria-pressed=true] { background: var(--gun-orange); color: #17120e; }
+.wl .wl-plan { background: #1d1b1a; border-color: #ffffff18; border-radius: 12px; }
+.wl .wl-plan.wl-featured { background: linear-gradient(145deg, #38291e, #211d19); color: #f5e7d6; border-color: #ff771b80; }
+.wl .wl-recommend { background: var(--gun-orange); color: #17120e; }
+.wl .wl-plan-label, .wl .wl-featured .wl-plan-label { color: #cba27c; }
+.wl .wl-plan li svg { color: var(--gun-orange); }
+.wl .wl-install { border-color: #ffffff15; }
+.wl .wl-install b { color: #e3c6a4; }
+.wl .wl-install p, .wl .wl-terms { color: #b3a694; }
+.wl .wl-poster { background: #211e1a; border-color: #ffffff18; box-shadow: 0 20px 45px #0003; }
+.wl .wl-poster a { color: #d5ab80; }
+.wl .wl-benefit>svg, .wl .wl-process article>span { color: var(--gun-orange); }
+.wl .wl-process article, .wl .wl-faq details { border-color: #ffffff16; }
+.wl .wl-final { background: radial-gradient(ellipse at 85% 30%, #ff771b0c, transparent 65%), #1b1714; border-block: 1px solid #ffffff0d; }
+.wl .wl-footer { background: #101011; color: #aa9882; }
+.wl .wl-footer a { color: #d6b793; }
+.wl [id] { scroll-margin-top: 0; }
+.wl .wl-price-note { opacity: .85; }
+.motion-reveal { opacity: 0; translate: 0 26px; transition: opacity .7s ease var(--reveal-delay, 0ms), translate .7s cubic-bezier(.2,.7,.2,1) var(--reveal-delay, 0ms); }
+.motion-reveal.motion-visible { opacity: 1; translate: 0 0; }
+.gun-scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--gun-orange); transform-origin: left; z-index: 110; box-shadow: 0 0 15px #ff771b80; }
+.gun-cursor { position: fixed; left: 0; top: 0; pointer-events: none; z-index: 150; opacity: 0; transition: opacity .2s; }
+.gun-cursor.cursor-visible { opacity: 1; }
+.gun-cursor>span { display: block; width: 24px; height: 24px; border: 1px solid #ff771b80; border-radius: 50%; margin: -12px; transition: width .3s, height .3s, margin .3s, background .3s; }
+.gun-cursor.cursor-active>span { width: 46px; height: 46px; margin: -23px; background: #ff771b0c; border-color: #ff771b50; }
+.gun-contact-dock { position: fixed; bottom: 25px; right: 25px; z-index: 29; background: #211b16ee; backdrop-filter: blur(12px); border: 1px solid #ff771b55; color: #e7d4bf; padding: 13px 17px; display: flex; align-items: center; gap: 11px; border-radius: 12px; box-shadow: 0 8px 30px #0004; font-size: 11px; transition: background .2s, transform .3s; }
+.gun-contact-dock>svg:first-child { color: var(--gun-orange); }
+.gun-contact-dock:hover { transform: translateY(-3px); background: #352417; }
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+@keyframes floatLabel { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes statusPulse { 50% { box-shadow: 0 0 0 7px #ff771b04; } }
+@keyframes ambientMove { to { transform: translate(80px, 40px); } }
+@keyframes scrollTick { 50% { transform: translateY(7px); opacity: .4; } }
+@keyframes signalDraw { 0%,100% { stroke-dashoffset: 480; opacity: .3; } 50% { stroke-dashoffset: 0; opacity: 1; } }
+@media(hover:hover) and (pointer:fine) {
+  .portfolio-app .jrn-card:hover { border-color: #ff771b55; box-shadow: 0 20px 45px #0004; }
+  .portfolio-app .jrn-card:hover .jrn-open { color: #111; background: var(--gun-orange); }
+}
+@media(min-width:1600px) { .gun-hero-grid { min-height: 720px; } }
+@media(max-width:1100px) {
+  .portfolio-app .wrap, .portfolio-app .jrn-wrap { width: calc(100% - 56px); }
+  .portfolio-app .navigation { gap: 18px; }
+  .portfolio-app .navigation a { font-size: 11px; }
+  .gun-hero-grid { gap: 16px; min-height: 600px; }
+  .hero-portrait-stage { height: 590px; }
+  .hero-portrait { height: 570px; }
+  .portrait-label { padding: 11px; gap: 9px; }
+  .portrait-label-top { right: -5px; top: 100px; }
+  .portrait-label-bottom { left: 0; bottom: 75px; }
+  .portrait-label small { font-size: 6px; }
+  .portrait-label strong { font-size: 10px; }
+  .hero-facts { padding: 18px 14px; }
+  .hero-facts>div { padding-inline: 12px; }
+  .hero-facts strong { font-size: 22px; }
+  .hero-facts strong span { font-size: 8px; }
+  .hero-actions .button { padding: 13px 17px; font-size: 11px; }
+  .gun-service-card { padding: 28px; }
+  .portfolio-app .capability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portfolio-app .showcase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portfolio-app .showcase-photo { height: 250px; }
+  .portfolio-app .moment-image { height: 185px; }
+}
+@media(max-width:800px) {
+  .portfolio-app .section, .portfolio-app .jrn-section, .portfolio-app .wifi-section { padding: 70px 0; }
+  .portfolio-app .site-header .navigation { display: none; }
+  .portfolio-app .site-header .navigation.open { display: flex; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 7px; padding: 18px 28px 25px; background: #171719fc; border-bottom: 1px solid #ffffff20; }
+  .portfolio-app .navigation.open a { padding: 12px 10px; font-size: 13px; }
+  .portfolio-app .navigation a::after { display: none; }
+  .portfolio-app .navigation .profile-nav { padding: 12px 10px; }
+  .portfolio-app .menu-toggle { display: grid; place-items: center; min-width: 44px; min-height: 44px; }
+  .portfolio-app .nav-inner { height: 76px; gap: 16px; }
+  .gun-hero { padding-top: 99px; }
+  .gun-hero-grid { grid-template-columns: 1.15fr 1fr; min-height: 600px; gap: 5px; }
+  .hero-name { font-size: 105px; letter-spacing: -6px; }
+  .hero-title-small { font-size: 23px; }
+  .hero-greeting { font-size: 12px; }
+  .hero-role { font-size: 11px; line-height: 1.9; }
+  .hero-role>span { margin-inline: 4px; }
+  .hero-description { font-size: 12px; }
+  .hero-actions { gap: 9px; }
+  .hero-actions .button { font-size: 10px; padding: 12px 13px; }
+  .hero-social-row { flex-wrap: wrap; gap: 11px; margin-block: 20px 25px; }
+  .hero-social-row>span { font-size: 7px; }
+  .hero-facts { padding: 16px 12px; }
+  .hero-facts strong { display: block; font-size: 22px; }
+  .hero-facts strong span { display: block; font-size: 7px; margin-top: 1px; }
+  .hero-facts p { font-size: 8px; }
+  .hero-portrait-stage { height: 560px; }
+  .hero-portrait { height: 520px; bottom: 35px; width: 120%; max-width: 120%; left: -10%; }
+  .hero-watermark { font-size: 190px; right: 15px; top: 35px; }
+  .portrait-orbit { top: 155px; }
+  .portrait-label-top { top: 140px; right: -4px; }
+  .portrait-label-bottom { bottom: 70px; left: -10px; }
+  .portrait-label-icon { width: 28px; height: 28px; }
+  .portrait-label-bottom>svg { display: none; }
+  .portrait-caption { font-size: 6px; letter-spacing: .8px; }
+  .hero-bottom>span { display: none; }
+  .gun-service-grid { grid-template-columns: 1fr; }
+  .gun-service-card { padding: 32px; }
+  .gun-service-card h3 { font-size: 29px; }
+  .portfolio-app .jrn-header { margin-bottom: 35px; }
+  .portfolio-app .jrn-timeline { gap: 28px; }
+  .portfolio-app .jrn-timeline::before { background: linear-gradient(#ff771b80, #ffffff10); }
+  .portfolio-app .jrn-collage { height: 100%; min-height: 245px; }
+  .portfolio-app .wifi-layout { gap: 35px; }
+  .portfolio-app .moment-image { height: 175px; }
+  .portfolio-app .contact-layout { flex-direction: column; align-items: flex-start; gap: 35px; }
+  .portfolio-app .contact-links { max-width: 100%; }
+}
+@media(max-width:600px) {
+  html { scroll-padding-top: 90px; }
+  .portfolio-app .wrap, .portfolio-app .jrn-wrap { width: calc(100% - 40px); }
+  .portfolio-app .nav-inner, .portfolio-app .header-scrolled .nav-inner { height: 72px; gap: 10px; }
+  .portfolio-app .brand-lockup .brand-word { font-size: 29px; }
+  .portfolio-app .brand-word small { font-size: 5px; }
+  .portfolio-app .nav-contact { min-height: 38px; font-size: 10px; padding: 9px 13px; }
+  .portfolio-app .section, .portfolio-app .jrn-section, .portfolio-app .wifi-section, .portfolio-app .contact { padding: 58px 0; }
+  .portfolio-app .section-heading { gap: 18px; margin-bottom: 28px; align-items: flex-start; flex-direction: column; }
+  .portfolio-app h2, .portfolio-app .jrn-header h2 { font-size: 30px; letter-spacing: -1.2px; }
+  .portfolio-app .eyebrow, .portfolio-app .jrn-header .jrn-kicker { font-size: 9px; letter-spacing: 1.2px; margin-bottom: 14px; }
+  .portfolio-app .section-note { font-size: 12px; }
+  .gun-hero { padding-top: 96px; }
+  .gun-hero-grid { display: flex; flex-direction: column; gap: 0; min-height: 0; }
+  .gun-hero-copy { width: 100%; padding: 20px 0 0; }
+  .hero-location { margin-bottom: 22px; font-size: 8px; }
+  .hero-greeting { font-size: 13px; }
+  .hero-title-small { font-size: 25px; }
+  .hero-name { font-size: clamp(105px, 30vw, 150px); letter-spacing: -6px; }
+  .hero-role { font-size: 11px; margin-block: 9px 17px; }
+  .hero-description { font-size: 13px; max-width: 480px; }
+  .hero-actions { margin-top: 23px; gap: 9px; }
+  .hero-actions .button { min-height: 46px; padding: 12px 14px; font-size: 10px; gap: 8px; }
+  .hero-social-row { margin: 24px 0; gap: 15px; }
+  .gun-socials-compact a { width: 39px; height: 39px; min-height: 39px; }
+  .hero-facts { max-width: 100%; padding: 20px 17px; }
+  .hero-facts>div { padding-inline: 14px; }
+  .hero-facts strong { font-size: 25px; }
+  .hero-facts strong span { font-size: 8px; }
+  .hero-facts p { font-size: 8px; }
+  .hero-portrait-stage { width: 100%; max-width: 460px; height: 495px; margin-top: 25px; }
+  .hero-portrait { height: 490px; width: 100%; max-width: 100%; left: 0; bottom: 0; }
+  .hero-watermark { top: 12px; right: 20px; font-size: 210px; }
+  .portrait-orbit { top: 82px; width: 80%; left: 10%; }
+  .portrait-label-top { top: 103px; right: 0; }
+  .portrait-label-bottom { bottom: 69px; left: 0; }
+  .portrait-label { padding: 11px 12px; }
+  .portrait-label small { font-size: 6px; }
+  .portrait-label strong { font-size: 10px; }
+  .portrait-caption { bottom: 0; font-size: 6px; }
+  .hero-bottom { padding: 27px 0 26px; }
+  .gun-service-card { padding: 26px 22px; border-radius: 12px; }
+  .gun-service-card h3 { font-size: 26px; }
+  .gun-service-card>p:not(.service-footnote) { font-size: 12px; }
+  .service-card-top>span:nth-child(2) { font-size: 7px; letter-spacing: .5px; }
+  .service-card-top { gap: 10px; }
+  .service-card-actions { gap: 9px 17px; }
+  .service-card-actions .button { font-size: 11px; padding: 13px 18px; }
+  .portfolio-app .jrn-card { display: block; }
+  .portfolio-app .jrn-collage { height: 235px; min-height: 0; }
+  .portfolio-app .jrn-card-body { padding: 22px; }
+  .portfolio-app .jrn-card h3 { font-size: 22px; }
+  .portfolio-app .capability-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .portfolio-app .capability-grid article { padding: 22px 15px; }
+  .portfolio-app .capability-grid h3 { font-size: 17px; }
+  .portfolio-app .capability-grid p { font-size: 11px; }
+  .portfolio-app .capability-grid li { font-size: 9px; gap: 5px; }
+  .portfolio-app .showcase-grid { grid-template-columns: 1fr; gap: 22px; }
+  .portfolio-app .showcase-photo { height: 235px; }
+  .portfolio-app .showcase-copy h3 { font-size: 20px; }
+  .portfolio-app .showcase-copy p { font-size: 12px; }
+  .portfolio-app .wifi-layout { grid-template-columns: 1fr; }
+  .portfolio-app .wifi-copy h2 { font-size: 34px; }
+  .portfolio-app .wifi-copy>p:not(.eyebrow) { font-size: 13px; }
+  .portfolio-app .wifi-section .wifi-panel { padding: 22px; border-radius: 16px; }
+  .portfolio-app .wifi-actions .button { width: 100%; flex: auto; white-space: normal; }
+  .portfolio-app .moments-grid { grid-template-columns: 1fr 1fr; gap: 25px 13px; }
+  .portfolio-app .moment-image { height: 180px; }
+  .portfolio-app .moment h3 { font-size: 12px; }
+  .portfolio-app .contact h2 { font-size: 36px; }
+  .portfolio-app .personal-socials { gap: 8px; }
+  .portfolio-app .personal-socials a { font-size: 11px; padding: 10px; }
+  .portfolio-app .footer-inner { padding-bottom: 34px; }
+  .portfolio-app .footer-inner>div { width: auto; }
+  .portfolio-app .footer-inner>p { font-size: 8px; }
+  .gun-contact-dock { right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); padding: 12px 14px; font-size: 10px; }
+  .gun-cursor { display: none; }
+}
+@media(max-width:360px) {
+  .hero-title-small { font-size: 22px; }
+  .hero-role { font-size: 10px; }
+  .hero-actions .button { flex: 1 1 100%; }
+  .hero-facts { padding-inline: 12px; }
+  .hero-facts>div { padding-inline: 9px; }
+  .hero-facts p { font-size: 7px; }
+  .hero-social-row { gap: 10px; }
+  .hero-social-row>span { font-size: 6px; }
+  .portfolio-app .capability-grid { grid-template-columns: 1fr; }
+  .portfolio-app .moment-image { height: 155px; }
+}
+@media(hover:none), (pointer:coarse) { .gun-cursor { display: none; } }
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior: auto; }
+  .motion-reveal { opacity: 1; translate: none; transition: none; }
+  .portfolio-app *, .portfolio-app *::before, .portfolio-app *::after, .wl *, .wl *::before, .wl *::after { animation: none !important; transition: none !important; }
+  .hero-portrait { transform: none !important; }
+  .gun-cursor { display: none; }
+}

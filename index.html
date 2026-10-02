@@ -6,14 +6,24 @@
     <link rel="icon" type="image/png" sizes="192x192" href="%BASE_URL%brand/gun-ios-v2-192.png" />
     <link rel="apple-touch-icon" href="https://gunkerk17.github.io/Poforlio_Hai/brand/gun-apple-touch-icon.png" />
     <link rel="manifest" href="%BASE_URL%gun.webmanifest?v=2" />
-    <meta name="theme-color" content="#0b1b14" />
+    <meta name="theme-color" content="#101011" />
+    <script>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('hai-theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#101011' : '#fffaf3';
+      })();
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="GUN" />
     <title>Nguyễn Chí Hải (GUN) — Portfolio</title>
-    <meta name="description" content="Personal brand portfolio of Nguyễn Chí Hải — Football, Technology, Business & Content." />
+    <meta name="description" content="Mình là Nguyễn Chí Hải (GUN): kinh doanh FPT Telecom, tư vấn Internet/Wi-Fi và huấn luyện bóng đá thiếu nhi tại Cần Thơ. Khám phá hành trình và kết nối với mình." />
     <meta property="og:title" content="Nguyễn Chí Hải (GUN) — Portfolio" />
-    <meta property="og:description" content="Personal brand portfolio of Nguyễn Chí Hải — Football, Technology, Business & Content." />
+    <meta property="og:description" content="Tìm hiểu Hải (GUN), tư vấn Internet/Wi-Fi FPT, lớp bóng đá thiếu nhi tại Cần Thơ và các kênh mạng xã hội của mình." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

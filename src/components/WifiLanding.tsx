@@ -1,38 +1,105 @@
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ArrowLeft, Wifi, Check, Phone, Camera, Tv } from 'lucide-react';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
+import { ArrowUpRight, ArrowLeft, ArrowDown, Check, Phone, MapPin, MessageCircle, Gift, Wifi, Camera, Tv, Film, MonitorPlay, Users, Send, CalendarCheck } from 'lucide-react';
+import type Lenis from 'lenis';
 import { profileData } from '../data/profile';
+import { wifiPlans } from '../data/wifiPlans';
+import { wifiStory, type CameraChoice } from '../data/wifiExperience';
+import { wifiDevices } from '../data/wifiDevices';
+import { MotionGraphics } from './MotionGraphics';
+import { ProductShowcase } from './wifi/ProductShowcase';
+import { DeviceStage } from './wifi/DeviceStage';
+import { CameraChooser } from './wifi/CameraChooser';
+import { WifiFooter } from './wifi/WifiFooter';
+import { ThemeToggle } from './ui/ThemeToggle';
+import 'lenis/dist/lenis.css';
 import './wifi-landing.css';
 
-const plans = [
-  { name: 'Internet', price: 195000, label: 'KẾT NỐI MỖI NGÀY', items: ['Internet cho học tập và làm việc', 'Tư vấn Wi-Fi theo không gian nhà', 'Kiểm tra hạ tầng trước đăng ký'] },
-  { name: 'Combo V.VIP', price: 220000, label: 'KẾT NỐI + GIẢI TRÍ', items: ['Internet + FPT Play', 'Giải trí trên ứng dụng FPT Play', 'Thiết bị Box tính riêng nếu cần'] },
-  { name: 'Triple V.VIP', price: 230000, label: 'THÊM CAMERA CHO TỔ ẤM', items: ['Internet + FPT Play + lưu trữ camera', 'Tặng camera đầu tiên theo điều kiện gói', 'Xác nhận mẫu camera và thời gian lưu trữ'] },
-];
-const money = (value: number) => new Intl.NumberFormat('vi-VN').format(value);
 export default function WifiLanding() {
-  const root = useRef<HTMLDivElement>(null);
-  const [annual, setAnnual] = useState(false);
-  const contact = profileData.contact;
+  const contact = profileData.contact, reduced = useReducedMotion();
+  const intro = useRef<HTMLElement>(null), smoothScroll = useRef<Lenis | null>(null);
+  const [phase, setPhase] = useState(0), [selectedCamera, setSelectedCamera] = useState<CameraChoice | null>(null);
+  const { scrollYProgress } = useScroll({ target: intro, offset: ['start start', 'end end'] });
+  const story = wifiStory[phase];
+  const chosenCamera = wifiDevices.find(item => item.id === selectedCamera);
+  useMotionValueEvent(scrollYProgress, 'change', value => { if (window.innerWidth > 700 && !reduced) setPhase(value < .37 ? 0 : value < .74 ? 1 : 2); });
   useEffect(() => {
     const previous = document.title;
-    document.title = 'Internet FPT & Combo V.VIP | Hải · 0764 640 415';
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-      const nodes = root.current?.querySelectorAll('.wl-reveal');
-      const observer = new IntersectionObserver(entries => entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('wl-visible'); observer.unobserve(entry.target); } }), {threshold: .08});
-      nodes?.forEach(node => { node.classList.add('wl-ready'); observer.observe(node); });
-      return () => { observer.disconnect(); document.title = previous; };
-    }
-    return () => { document.title = previous; };
-  }, []);
-  return <div className="wl" ref={root}>
-    <header className="wl-nav"><a href="/" className="wl-brand wl-brand-lockup"><img src={`${import.meta.env.BASE_URL}brand/hai-wifi.svg`} alt=""/><span>HẢI WI-FI<small>TƯ VẤN INTERNET FPT</small></span></a><nav><a href="#pricing">Gói cước</a><a href="#benefits">Combo</a><a href="#questions">Hỏi đáp</a></nav><a href={contact.zaloUrl} target="_blank" rel="noopener noreferrer" className="wl-nav-cta">Nhắn Hải <ArrowUpRight size={16}/></a></header>
+    document.title = 'Hải Wi-Fi · Internet FPT Cần Thơ · 195k / 220k / 230k';
+    let cancelled = false, generation = 0;
+    const media = matchMedia('(min-width: 701px)');
+    const configure = () => {
+      const requestedGeneration = ++generation;
+      smoothScroll.current?.destroy(); smoothScroll.current = null;
+      if (reduced || !media.matches) return;
+      import('lenis').then(({ default: Lenis }) => {
+        if (!cancelled && generation === requestedGeneration && media.matches) smoothScroll.current = new Lenis({ autoRaf: true, duration: 1.05, smoothWheel: true, anchors: { offset: -100 } });
+      });
+    };
+    configure(); media.addEventListener('change', configure);
+    return () => { cancelled = true; media.removeEventListener('change', configure); smoothScroll.current?.destroy(); smoothScroll.current = null; document.title = previous; };
+  }, [reduced]);
+  const goToPhase = (index: number) => {
+    setPhase(index);
+    if (!intro.current || window.innerWidth <= 700 || reduced) return;
+    const top = intro.current.getBoundingClientRect().top + window.scrollY;
+    const target = top + (intro.current.offsetHeight - window.innerHeight) * wifiStory[index].point;
+    if (smoothScroll.current) smoothScroll.current.scrollTo(target, { duration: .9 });
+    else window.scrollTo({ top: target, behavior: 'smooth' });
+  };
+  return <div className="wl wl-compact wl-showroom wl-experience">
+    <MotionGraphics/>
+    <header className="wl-nav">
+      <a href="/" className="wl-brand wl-brand-lockup"><img src={`${import.meta.env.BASE_URL}brand/hai-wifi.svg`} alt=""/><span>HẢI WI-FI<small>TƯ VẤN INTERNET FPT</small></span></a>
+      <nav aria-label="Điều hướng Wi-Fi"><a href="#pricing">Gói cước</a><a href="#camera-choice">Chọn camera</a><a href="#location">FPT Cần Thơ</a></nav>
+      <div className="header-actions"><ThemeToggle/><a href={contact.zaloUrl} target="_blank" rel="noopener noreferrer" className="wl-nav-cta">Nhắn Hải <ArrowUpRight size={16}/></a></div>
+    </header>
     <main>
-      <section className="wl-hero wl-wrap"><div className="wl-hero-copy"><a className="wl-back" href="/#products"><ArrowLeft size={14}/> Về portfolio</a><p className="wl-kicker">INTERNET FPT · TƯ VẤN CÙNG HẢI</p><h1>Kết nối cả nhà.<br/><em>Mở thêm trải nghiệm.</em></h1><p>Wi-Fi cho ngày làm việc. FPT Play cho tối thư giãn. Camera để gần nhà hơn, dù bạn ở đâu.</p><div className="wl-cta-row"><a href="#pricing" className="wl-btn">Khám phá gói cước <ArrowUpRight size={18}/></a><a className="wl-text-link" href={`tel:${contact.phone}`}><Phone size={16}/>{contact.phoneFormatted}</a></div><div className="wl-hero-stats"><span><b>195k</b>Internet / tháng</span><span><b>3 trong 1</b>Kết nối · Giải trí · Camera</span></div></div><div className="wl-visual" onPointerMove={e => { if(e.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; const r=e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty('--rx', `${-(e.clientY-r.top-r.height/2)/r.height*7}deg`); e.currentTarget.style.setProperty('--ry', `${(e.clientX-r.left-r.width/2)/r.width*9}deg`); }} onPointerLeave={e => { e.currentTarget.style.setProperty('--rx','0deg'); e.currentTarget.style.setProperty('--ry','0deg'); }}><div className="wl-orbit"/><img src="/images/fpt-home-devices.jpg" alt="Thiết bị Wi-Fi, FPT Play và camera FPT"/><span className="wl-float wl-float-top"><Wifi size={21}/> Một nhà. Đủ kết nối.</span><span className="wl-float wl-float-bottom"><Camera size={20}/><span>Triple V.VIP<b>230k / tháng</b></span></span></div></section>
-      <section id="pricing" className="wl-pricing wl-reveal"><div className="wl-wrap"><div className="wl-heading"><div><p className="wl-kicker">CHỌN THEO NHU CẦU</p><h2>Rõ gói cước.<br/>Dễ chọn cho nhà mình.</h2></div><div className="wl-switch" role="group" aria-label="Kỳ thanh toán"><button aria-pressed={!annual} onClick={() => setAnnual(false)}>Hàng tháng</button><button aria-pressed={annual} onClick={() => setAnnual(true)}>Đóng 12 tháng</button></div></div><div className="wl-plans">{plans.map((p,i) => <article className={`wl-plan ${i===2?'wl-featured':''}`} key={p.name}>{i===2 && <span className="wl-recommend">COMBO CAMERA NỔI BẬT</span>}<p className="wl-plan-label">{p.label}</p><h3>{p.name}</h3><div className="wl-price">{money(annual?p.price*12:p.price)}<span>đ / {annual?'12 tháng':'tháng'}</span></div><p className="wl-price-note">{annual?'Tổng cước trước hỗ trợ riêng khi đóng 12 tháng.':'Cước hàng tháng, chưa cộng phí lắp đặt.'}</p><ul>{p.items.map(t => <li key={t}><Check size={16}/>{t}</li>)}</ul><a className="wl-btn" href={contact.zaloUrl} target="_blank" rel="noopener noreferrer">Hỏi Hải về gói này <ArrowUpRight size={17}/></a></article>)}</div><div className="wl-install"><div><b>Lắp đặt: 300.000đ</b><p>Có thể hỗ trợ 100.000–300.000đ. Mức áp dụng được Hải xác nhận theo từng trường hợp.</p></div><div><b>Đóng trước 12 tháng?</b><p>Có hỗ trợ thêm. Nhắn Hải để biết mức hỗ trợ và tổng thanh toán trước khi đăng ký.</p></div></div><p className="wl-terms">Mức cước theo thông tin tư vấn của Hải. Gói áp dụng, quà tặng, thiết bị, VAT và phí phát sinh sẽ được xác nhận theo địa chỉ và chính sách tại thời điểm đăng ký. Camera tặng thuộc gói Triple phù hợp; không mặc định tặng ở mọi gói Combo.</p></div></section>
-      <section id="benefits" className="wl-wrap wl-benefits wl-reveal"><div className="wl-poster"><img src="/images/fpt-combo-poster.jpg" alt="Giới thiệu combo FPT Internet, FPT Play và Camera" loading="lazy"/><a href="/images/fpt-combo-poster.jpg" target="_blank" rel="noopener noreferrer">Xem poster đầy đủ <ArrowUpRight size={16}/></a></div><div><p className="wl-kicker">MỘT HỆ SINH THÁI CHO TỔ ẤM</p><h2>Không chỉ là Wi-Fi.</h2>{[{Icon:Wifi,title:'Kết nối để làm điều bạn muốn',text:'Học online, làm việc và sử dụng nhiều thiết bị. Hải tư vấn theo diện tích và nhu cầu thực tế.'},{Icon:Tv,title:'Thêm thời gian giải trí cùng nhau',text:'Combo có FPT Play. Nội dung và quyền xem theo gói đăng ký; Box được tư vấn riêng nếu bạn cần.'},{Icon:Camera,title:'Thêm một góc nhìn về ngôi nhà',text:'Triple có camera và dịch vụ lưu trữ theo gói. Mẫu trong nhà / ngoài trời và thời gian lưu trữ sẽ được xác nhận trước lắp đặt.'}].map(({Icon,title,text}) => <div className="wl-benefit" key={title}><Icon/><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></section>
-      <section className="wl-process wl-wrap wl-reveal"><p className="wl-kicker">BẮT ĐẦU THẬT ĐƠN GIẢN</p><h2>Ba bước, Hải đồng hành.</h2><div>{[{title:'Gửi địa chỉ',text:'Nhắn Zalo vị trí lắp đặt và nhu cầu sử dụng.'},{title:'Chọn gói phù hợp',text:'Kiểm tra hạ tầng, chốt cước và hỗ trợ áp dụng.'},{title:'Hẹn lịch lắp đặt',text:'Thống nhất thủ tục và thời gian phù hợp với bạn.'}].map((p,i) => <article key={p.title}><span>0{i+1}</span><h3>{p.title}</h3><p>{p.text}</p></article>)}</div></section>
-      <section id="questions" className="wl-faq wl-wrap wl-reveal"><div><p className="wl-kicker">BẠN CÓ THỂ ĐANG THẮC MẮC</p><h2>Hỏi trước.<br/>An tâm chọn sau.</h2></div><div>{[{q:'195k, 220k và 230k khác nhau thế nào?',a:'195k là Internet; 220k là combo Internet và FPT Play; 230k là Triple thêm camera và dịch vụ lưu trữ theo gói áp dụng.'},{q:'Có chắc được miễn phí lắp đặt không?',a:'Phí lắp đặt là 300.000đ. Hải có thể hỗ trợ từ 100.000đ đến 300.000đ tùy trường hợp; chỉ xác nhận mức cuối cùng sau khi kiểm tra.'},{q:'Camera được tặng là mẫu nào?',a:'Camera đầu tiên được tặng theo điều kiện gói Triple áp dụng. Nhắn Hải để xác nhận mẫu, nhu cầu trong nhà hoặc ngoài trời và thời gian lưu trữ. Không mặc định là mẫu trong ảnh minh họa.'},{q:'Đóng 12 tháng được giảm bao nhiêu?',a:'Có hỗ trợ thêm nhưng chưa có mức cố định. Số tiền hiển thị là cước tháng nhân 12, chưa trừ hỗ trợ và chưa cộng phí lắp đặt hoặc thiết bị.'}].map(f => <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>)}</div></section>
-      <section className="wl-final"><div className="wl-wrap"><p className="wl-kicker">HẢI · FPT TELECOM CẦN THƠ</p><h2>Nhà cần kết nối.<br/>Hải sẵn sàng lắng nghe.</h2><a href={contact.zaloUrl} className="wl-btn" target="_blank" rel="noopener noreferrer">Tư vấn qua Zalo <ArrowUpRight size={19}/></a><a className="wl-call" href={`tel:${contact.phone}`}>{contact.phoneFormatted}</a></div></section>
-    </main><footer className="wl-footer"><span>Trang tư vấn cá nhân của Nguyễn Chí Hải</span><a href="/">Về portfolio <ArrowUpRight size={14}/></a></footer>
+      <section className="wf-scrollytelling" ref={intro} aria-label="Khám phá Internet, FPT Play và Camera">
+        <div className="wf-intro wl-wrap">
+          <div className="story-copy">
+            <a className="wl-back" href="/#products"><ArrowLeft size={14}/>Về portfolio của Hải</a>
+            <p className="wl-kicker"><MapPin size={14}/> INTERNET FPT · CẦN THƠ</p>
+            <div className="story-text" aria-live="polite"><AnimatePresence mode="wait"><motion.div key={phase} initial={reduced ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: reduced ? 0 : .24 }}>
+              <h1>{story.title}<br/><em>{story.accent}</em></h1><p className="wf-intro-text">{story.description}</p><div className="story-offer"><strong>{story.price}</strong><span>{story.offer}</span></div>
+            </motion.div></AnimatePresence></div>
+            <div className="wf-intro-bottom"><a href={phase === 2 ? '#camera-choice' : '#pricing'} className="wf-btn">{phase === 2 ? 'Chọn camera được tặng' : 'Xem gói phù hợp'} <ArrowUpRight size={17}/></a><a href={`tel:${contact.phone}`} className="wf-phone"><Phone size={15}/>{contact.phoneFormatted}</a></div>
+            <div className="wf-quick-prices">{wifiPlans.map(plan => <a key={plan.id} href={plan.id === 'camera' ? '#camera-choice' : '#pricing'}><strong>{plan.price}<span>k</span></strong><span>{plan.name}</span><small>/ tháng</small></a>)}</div>
+            <div className="story-tabs" role="group" aria-label="Các bước khám phá FPT">{wifiStory.map((item, index) => <button key={item.name} type="button" aria-pressed={phase === index} onClick={() => goToPhase(index)}><span>0{index + 1}</span>{item.name}<i/></button>)}</div>
+            <a className="wf-scroll-cue" href="#fpt-play"><span><ArrowDown size={15}/></span>Cuộn để khám phá trọn bộ thiết bị</a>
+          </div>
+          <ProductShowcase progress={scrollYProgress} phase={phase} onPhaseChange={goToPhase}/>
+        </div>
+      </section>
+      <section className="play-section wl-wrap" id="fpt-play" aria-labelledby="play-title">
+        <div className="play-copy"><p className="wl-kicker"><Tv size={16}/> 02 / GIẢI TRÍ CHO CẢ NHÀ</p><h2 id="play-title">Từ kết nối.<br/><em>Đến những phút vui.</em></h2><p>Thêm FPT Play để cả nhà cùng xem chương trình mình thích. Kết hợp Wi-Fi trong một gói, từ <strong>220k/tháng.</strong></p><div className="play-benefits">{[{ Icon: Film, text: 'Phim & truyền hình' }, { Icon: Users, text: 'Giải trí gia đình' }, { Icon: MonitorPlay, text: 'Xem trên thiết bị phù hợp' }].map(({ Icon, text }) => <span key={text}><Icon size={19}/>{text}</span>)}</div><a className="wf-btn" href={contact.zaloUrl} target="_blank" rel="noopener noreferrer">Tư vấn Wi-Fi + FPT Play <ArrowUpRight size={17}/></a><small>Quyền xem theo gói đăng ký. Box được tư vấn riêng nếu cần.</small></div>
+        <DeviceStage device="play" label="FPT Play Box, remote và TV" className="play-stage"/>
+      </section>
+      <CameraChooser selected={selectedCamera} onSelect={setSelectedCamera}/>
+      <section id="pricing" className="wf-pricing wl-wrap" aria-labelledby="wifi-pricing-title">
+        <div className="wf-head"><div><p className="wl-kicker">GIÁ RÕ RÀNG · CHỌN THEO NHU CẦU</p><h2 id="wifi-pricing-title">3 gói chính.<br/><span>Nhà mình cần gói nào?</span></h2></div><span className="wf-monthly">Cước theo tháng</span></div>
+        <div className="wf-plans">{wifiPlans.map((plan, index) => <article className={`wf-plan ${index === 2 ? 'wf-plan-featured' : ''}`} key={plan.id}>
+          <div className="wf-plan-top"><span className="wf-plan-icon"><plan.Icon size={25}/></span><span>{plan.label}</span><small>0{index + 1}</small></div>
+          {index === 2 && <span className="wf-plan-badge"><Gift size={12}/>Tặng 01 camera · chọn 1 trong 2</span>}
+          <h3>{plan.name}</h3><p className="wf-price"><strong>{plan.price}<span>k</span></strong><span>/ tháng</span></p>
+          <ul>{plan.features.map(text => <li key={text}><Check size={15}/>{text}</li>)}</ul>
+          {index === 2 && <p className="plan-camera-picked" aria-live="polite">{chosenCamera ? `Bạn đã chọn: ${chosenCamera.title}` : 'Play 4 hoặc IQ 4S — bạn chọn mẫu được tặng.'}</p>}
+          <a className="wf-btn" href={index === 2 ? '#camera-choice' : contact.zaloUrl} target={index === 2 ? undefined : '_blank'} rel={index === 2 ? undefined : 'noopener noreferrer'}>{index === 2 ? chosenCamera ? 'Xem camera đã chọn' : 'Chọn camera & tư vấn' : `Tư vấn gói ${plan.price}k`} <ArrowUpRight size={17}/></a>
+        </article>)}</div>
+        <details id="questions" className="wf-details"><summary>Chi phí lắp đặt & những thông tin cần biết <span>+</span></summary><div>
+          <p><strong>Lắp đặt: 300.000đ.</strong> Có thể hỗ trợ 100.000–300.000đ; Hải xác nhận mức áp dụng theo từng trường hợp.</p>
+          <p><strong>Đóng trước 12 tháng?</strong> Tổng cước trước hỗ trợ: Wi-Fi 2.340.000đ · Wi-Fi + FPT Play 2.640.000đ · Wi-Fi + FPT Play + Cam 2.760.000đ. Nhắn Hải để biết hỗ trợ và tổng thanh toán.</p>
+          <p><strong>Quà tặng camera:</strong> Combo 230k tặng 01 camera. Bạn chọn Camera Play 4 hoặc Camera IQ 4S; không nhận đồng thời cả hai. Hải xác nhận vị trí lắp và điều kiện lưu trữ trước khi đăng ký.</p>
+          <p><strong>FPT Play:</strong> Quyền xem theo gói đăng ký; Box được tư vấn riêng nếu cần.</p>
+          <p>Gói áp dụng, VAT, hỗ trợ lắp đặt và phí phát sinh được xác nhận theo địa chỉ, chính sách tại thời điểm đăng ký. Thiết bị 3D là hình minh họa theo mẫu bạn đang xem.</p>
+          <a href="/images/wifi/combo-vvip-hai.png" target="_blank" rel="noopener noreferrer">Xem poster combo FPT <ArrowUpRight size={14}/></a>
+        </div></details>
+      </section>
+      <section className="setup-section wl-wrap" aria-labelledby="setup-title"><div><p className="wl-kicker">BẠN CHỌN NHU CẦU · HẢI LO TƯ VẤN</p><h2 id="setup-title">Bắt đầu thật đơn giản.</h2></div><div className="setup-steps">{[{ Icon: Send, title: 'Gửi địa chỉ', text: 'Nhắn Hải khu vực muốn lắp.' }, { Icon: Wifi, title: 'Kiểm tra & chọn gói', text: 'Kiểm tra hạ tầng, tư vấn theo nhu cầu.' }, { Icon: CalendarCheck, title: 'Hẹn lịch lắp', text: 'Xác nhận chi phí và lịch phù hợp.' }].map(({ Icon, title, text }, index) => <div key={title}><span>0{index + 1}</span><Icon size={23}/><h3>{title}</h3><p>{text}</p></div>)}</div></section>
+      <section id="other-services" className="wf-other wl-wrap"><div><p className="wl-kicker">CÒN NHIỀU LỰA CHỌN KHÁC</p><h2>Bạn cần thêm dịch vụ?</h2><p>Camera riêng, FPT Play hoặc giải pháp Wi-Fi cho nhiều thiết bị. Mình trao đổi theo nhu cầu của bạn.</p></div><div className="wf-other-links">{[{ Icon: Camera, name: 'Camera' }, { Icon: Tv, name: 'FPT Play' }, { Icon: Wifi, name: 'Giải pháp Wi-Fi' }].map(({ Icon, name }) => <a key={name} href={contact.zaloUrl} target="_blank" rel="noopener noreferrer"><Icon size={18}/>{name}<ArrowUpRight size={14}/></a>)}</div></section>
+      <section className="wf-bottom wl-wrap"><div><p className="wl-kicker">NHÀ MÌNH SẴN SÀNG KẾT NỐI?</p><h2>Chọn gói của bạn.<br/><span>Phần còn lại, cứ nhắn Hải.</span></h2></div><a className="wf-btn" href={contact.zaloUrl} target="_blank" rel="noopener noreferrer"><MessageCircle size={18}/>Tư vấn qua Zalo <ArrowUpRight size={16}/></a></section>
+    </main>
+    <WifiFooter/>
   </div>;
 }

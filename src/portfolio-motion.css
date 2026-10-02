@@ -1,0 +1,27 @@
+/* Add depth to the existing compositions without introducing another render loop. */
+.hero-portrait-motion { perspective: 1100px; }
+.portfolio-app .moment { position: relative; border-radius: 10px; }
+.portfolio-app .moment-image>span { transition: transform .35s, background .3s; }
+.portfolio-app .moment:hover .moment-image>span { transform: rotate(45deg); background: var(--gun-orange); }
+.portfolio-app .capability-grid article.motion-visible::before { transform: scaleX(1); transition-delay: .35s; }
+.portfolio-app .capability-grid article.motion-reveal li { opacity: 0; translate: -12px 0; transition: opacity .55s, translate .55s; }
+.portfolio-app .capability-grid article.motion-visible li { opacity: 1; translate: 0 0; }
+.portfolio-app .capability-grid li:nth-child(1) { transition-delay: .2s; }
+.portfolio-app .capability-grid li:nth-child(2) { transition-delay: .3s; }
+.portfolio-app .capability-grid li:nth-child(3) { transition-delay: .4s; }
+.portfolio-app .capability-number { display: inline-block; transition: transform .4s; }
+.portfolio-app .capability-grid article:hover .capability-number { transform: translateX(5px); }
+.portfolio-app :is(.section-heading, .jrn-header).motion-reveal h2 { clip-path: inset(0 0 100% 0); translate: 0 12px; transition: clip-path .9s cubic-bezier(.2,.7,.2,1), translate .9s; }
+.portfolio-app :is(.section-heading, .jrn-header).motion-visible h2 { clip-path: inset(-10% -5% -10% -5%); translate: 0 0; }
+.portfolio-app .jrn-node { transition: box-shadow .5s; }
+.portfolio-app .jrn-chapter.motion-visible .jrn-node { box-shadow: 0 0 0 7px #ff771b0c; }
+.portfolio-app .personal-socials a svg:last-child { transition: transform .3s; }
+.portfolio-app .personal-socials a:hover svg:last-child { transform: translate(2px, -2px); }
+[data-theme='light'] .portfolio-app .motion-card[data-motion-card].card-pointer-active { box-shadow: 0 24px 45px #634c151a; }
+@media(hover:none) { .portfolio-app .motion-card[data-motion-card] { transform: none; } }
+@media(prefers-reduced-motion:reduce) {
+  .portfolio-app .capability-grid article.motion-reveal li { opacity: 1; translate: none; }
+  .portfolio-app :is(.section-heading, .jrn-header).motion-reveal h2 { clip-path: none; translate: none; }
+  .portfolio-app .moment:hover .moment-image>span, .portfolio-app .capability-grid article:hover .capability-number, .portfolio-app .personal-socials a:hover svg:last-child { transform: none; }
+  .portfolio-app :is(.moment-image>span, .capability-grid li, .capability-number, .section-heading h2, .jrn-header h2) { transition: none; }
+}

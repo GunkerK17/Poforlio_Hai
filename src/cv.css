@@ -1,0 +1,9 @@
+.hero-cv-row { margin-top: 14px; }
+.cv-links { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.cv-links a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--gun-muted); font-size: 11px; font-weight: 550; transition: color .2s; }
+.cv-links a>svg { color: var(--gun-orange); flex-shrink: 0; }
+.cv-links a:hover { color: var(--gun-orange); }
+.cv-links small { padding: 3px 5px; border: 1px solid var(--gun-line); border-radius: 4px; font-size: 8px; letter-spacing: .6px; }
+.cv-separator { width: 1px; height: 15px; background: var(--gun-line); }
+.identity-content>.cv-links { margin-top: 15px; border-top: 1px solid var(--gun-line); padding-top: 8px; }
+@media(prefers-reduced-motion:reduce) { .cv-links a { transition: none; } }

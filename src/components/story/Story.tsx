@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowUpRight, ArrowRight, ArrowLeft, X, Images, ChevronLeft, ChevronRight } from 'lucide-react';
 import { journeyStages } from '../../data/journeyDetails';
+import { profileContent } from '../../data/profileContent';
 import './story.css';
 
 type Stage = typeof journeyStages[number];
@@ -59,7 +60,7 @@ function JourneyCard({ stage, index, onOpen }: { stage: Stage; index: number; on
 export function Story() {
   const [active, setActive] = useState<number | null>(null);
   return <section id="story" className="jrn-section" aria-labelledby="jrn-title"><div className="jrn-wrap">
-    <header className="jrn-header"><div><p className="jrn-kicker">02 / HÀNH TRÌNH TÔI LUYỆN</p><h2 id="jrn-title">Mỗi chặng đường,<br />một phiên bản <em>tốt hơn.</em></h2></div><div className="jrn-intro"><span className="jrn-small-line" /><p>Từ những buổi tập trên sân cỏ đến giảng đường và công việc. Mỗi dấu mốc đều có một câu chuyện của riêng mình.</p><span className="jrn-header-note">2015 — HIỆN TẠI <ArrowRight size={17} /></span></div></header>
+    <header className="jrn-header"><div><p className="jrn-kicker">02 / CÂU CHUYỆN CỦA MÌNH</p><h2 id="jrn-title">Mỗi chặng đường,<br />một phiên bản <em>tốt hơn.</em></h2></div><div className="jrn-intro"><span className="jrn-small-line" /><p>{profileContent.bio}</p><span className="jrn-header-note">2015 — HIỆN TẠI <ArrowRight size={17} /></span></div></header>
     <div className="jrn-timeline">{journeyStages.map((stage,index) => <JourneyCard key={stage.id} stage={stage} index={index} onOpen={() => setActive(index)} />)}</div>
     <div className="jrn-ending"><span className="jrn-ending-dot" /><p>Hành trình vẫn đang tiếp tục.</p><span>Vẫn học hỏi. Vẫn tiến lên. Vẫn là mình.</span></div>
     {active !== null && <JourneyAlbum initial={active} onClose={() => setActive(null)} />}
