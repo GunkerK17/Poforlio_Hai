@@ -1,9 +1,10 @@
 import type { LeadData } from '../data/leadForm';
+import { submitEmailLead } from './emailLead';
 
-export type LeadSubmission = { mode: 'api' | 'sheets' | 'demo' | 'zalo' };
+export type LeadSubmission = { mode: 'api' | 'sheets' | 'demo' | 'zalo' | 'email' };
 const sheetsUrl = import.meta.env.VITE_LEAD_GOOGLE_SCRIPT_URL?.trim();
-const delivery = import.meta.env.VITE_LEAD_DELIVERY;
-export const leadDeliveryMode = delivery === 'sheets' && sheetsUrl ? 'sheets' : delivery === 'api' && import.meta.env.VITE_LEAD_API_URL ? 'api' : delivery === 'demo' ? 'demo' : 'zalo';
+const delivery = import.meta.env.VITE_LEAD_DELIVERY || 'email';
+export const leadDeliveryMode = delivery === 'sheets' && sheetsUrl ? 'sheets' : delivery === 'api' && import.meta.env.VITE_LEAD_API_URL ? 'api' : delivery === 'demo' ? 'demo' : delivery === 'zalo' ? 'zalo' : 'email';
 
 export function createLeadRequestId(): string {
   if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
@@ -30,8 +31,12 @@ export async function submitLead(data: LeadData, signal?: AbortSignal, requestId
   const cancel = () => controller.abort();
   if (signal?.aborted) controller.abort();
   signal?.addEventListener('abort', cancel, { once: true });
-  const timeout = setTimeout(cancel, leadDeliveryMode === 'sheets' ? 25000 : 12000);
+  const timeout = setTimeout(cancel, leadDeliveryMode === 'sheets' || leadDeliveryMode === 'email' ? 25000 : 12000);
   try {
+    if (leadDeliveryMode === 'email') {
+      await submitEmailLead(data, controller.signal, requestId);
+      return { mode: 'email' };
+    }
     // Apps Script accepts text/plain JSON without a browser preflight. Read the
     // redirected JSON response; never treat an opaque no-cors response as saved.
     const isSheets = leadDeliveryMode === 'sheets';

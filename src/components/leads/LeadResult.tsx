@@ -9,7 +9,7 @@ export function LeadResult({ lead, submission, initialHandoff, onEdit, onReset }
   const [handoff, setHandoff] = useState(initialHandoff), [busy, setBusy] = useState(false);
   const sending = useRef(false), messageField = useRef<HTMLTextAreaElement>(null);
   const message = leadMessage(lead);
-  const received = submission.mode === 'api' || submission.mode === 'sheets', demo = submission.mode === 'demo';
+  const received = submission.mode === 'api' || submission.mode === 'sheets' || submission.mode === 'email', demo = submission.mode === 'demo';
   const failedCopy = handoff?.copied === false;
   useEffect(() => { if (failedCopy) { messageField.current?.focus({ preventScroll: true }); messageField.current?.select(); } }, [failedCopy]);
   const copyAndOpen = async () => {
@@ -27,7 +27,7 @@ export function LeadResult({ lead, submission, initialHandoff, onEdit, onReset }
   return <section className="lead-result" aria-labelledby="lead-result-title">
     <div className="lead-result-icon" aria-hidden="true">{received ? <CheckCircle2 size={34}/> : <MessageCircle size={34}/>}</div>
     <div role="status"><p className="lead-kicker">{received ? 'ĐÃ TIẾP NHẬN YÊU CẦU' : demo ? 'BẢN XEM THỬ' : handoff?.copied ? 'ĐÃ SAO CHÉP ĐẦY ĐỦ' : 'NỘI DUNG ĐÃ CHUẨN BỊ'}</p>
-      <h2 id="lead-result-title" tabIndex={-1}>{received ? 'Đăng ký thành công!' : demo ? 'Đã hoàn tất bản xem thử.' : 'Yêu cầu đã sẵn sàng.'}</h2>
+      <h2 id="lead-result-title" tabIndex={-1}>{received ? 'Đã gửi yêu cầu tư vấn!' : demo ? 'Đã hoàn tất bản xem thử.' : 'Yêu cầu đã sẵn sàng.'}</h2>
       <p className="lead-result-description">{received ? 'Cảm ơn anh/chị đã để lại thông tin 🧡 Hải sẽ kiểm tra hạ tầng và liên hệ tư vấn trong thời gian sớm nhất.' : demo ? 'Thông tin chưa được gửi đến Hải. Anh/chị có thể gửi nhu cầu qua Zalo bên dưới.' : handoff?.copied ? 'Trong Zalo, dán nội dung đã sao chép và bấm Gửi cho Hải. Yêu cầu gồm đầy đủ thông tin anh/chị vừa điền.' : 'Sao chép nội dung bên dưới, mở Zalo của Hải, dán và bấm Gửi để Hải nhận được yêu cầu nhé.'}</p>
     </div>
     {!received && <div className={`lead-zalo-guide ${failedCopy ? 'needs-manual-copy' : ''}`}>

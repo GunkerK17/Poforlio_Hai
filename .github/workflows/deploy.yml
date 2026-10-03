@@ -26,7 +26,8 @@ jobs:
       - run: npm run lint
       - run: npm run build -- --base=/Poforlio_Hai/
         env:
-          VITE_LEAD_DELIVERY: ${{ vars.VITE_LEAD_DELIVERY || 'zalo' }}
+          VITE_LEAD_DELIVERY: ${{ vars.VITE_LEAD_DELIVERY || 'email' }}
+          VITE_LEAD_EMAIL: ${{ vars.VITE_LEAD_EMAIL || 'chihai11102003@gmail.com' }}
           VITE_LEAD_API_URL: ${{ vars.VITE_LEAD_API_URL }}
           VITE_LEAD_GOOGLE_SCRIPT_URL: ${{ vars.VITE_LEAD_GOOGLE_SCRIPT_URL }}
       - run: node scripts/pages.mjs

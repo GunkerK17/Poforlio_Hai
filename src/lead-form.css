@@ -127,3 +127,5 @@ html:has(.lead-page) { scroll-padding-top: 20px; }
 .wl-experience .wf-registration-link { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; margin-top: 8px; color: #b35014; font-size: 11px; border-bottom: 1px solid #edc29c; }
 [data-theme='dark'] .wl-experience .wf-registration-link { color: var(--orange); border-color: #ff8a3c45; }
 @media(max-width:700px) { .wl-experience .wf-registration-link { order: 4; align-self: flex-start; margin-bottom: 8px; } }
+.lead-honey{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.lead-send-error button{display:flex;align-items:center;gap:6px;margin-top:8px;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-decoration:underline;cursor:pointer}

@@ -4,21 +4,23 @@ Trang: `/wifi/dang-ky/`. Nút đăng ký trên Wi-Fi mở trang này; gói và m
 
 ## Trạng thái nhận khách
 
-Người dùng đã chọn chuyển sang Zalo. Mặc định `VITE_LEAD_DELIVERY=zalo`: khách điền và bấm **GỬI YÊU CẦU QUA ZALO** → web sao chép toàn bộ nội dung và mở `https://zalo.me/0764640415`. Khách dán rồi bấm Gửi trong Zalo; chỉ bước đó mới gửi yêu cầu đến Hải. Không cần đăng nhập Google.
+Người dùng đã đồng ý dùng FormSubmit nhận email tại `chihai11102003@gmail.com`. Mặc định `VITE_LEAD_DELIVERY=email`: khách điền và bấm **GỬI YÊU CẦU TƯ VẤN** → web POST JSON tới `https://formsubmit.co/ajax/chihai11102003%40gmail.com`. Khách ở lại trang, không cần mở Zalo hay dán nội dung. Chủ email phải bấm **Activate Form** trong thư FormSubmit một lần cho website này. HTTP 200 nhưng `success: "false"` hoặc yêu cầu kích hoạt vẫn là lỗi, giữ nguyên form và không báo thành công.
 
-Nội dung gồm tên, số điện thoại, khu vực, gói, nhu cầu, nhà/số lầu, loại TV, khả năng Wi-Fi, thời gian lắp và ghi chú (bao gồm mẫu camera đã chọn). Câu hỏi bỏ qua vẫn có dòng ghi rõ chưa cung cấp. Không đưa thông tin khách lên URL, localStorage hay console. Khi sao chép bị chặn, web hiển thị nội dung để chọn/sao chép thủ công. Khi popup bị chặn, có link **Mở Zalo của Hải**. Sửa thông tin sẽ tạo nội dung mới; đăng ký thêm sẽ xóa form cũ.
+Ngày 03/10/2026 đã gửi một yêu cầu kiểm tra được ghi rõ, từ URL production tới email này. FormSubmit trả `success: "true"`, `message: "The form was submitted successfully."` sau kích hoạt. Chưa kiểm tra bên trong hộp thư của chủ email.
 
-Mã Sheets đã chuẩn bị trong `google-sheets/`, nhưng chưa được kết nối thật. Không tiếp tục thiết lập Google khi đang dùng Zalo. API/Sheets chỉ hoạt động khi chủ động chọn `VITE_LEAD_DELIVERY=api` hoặc `sheets` và cấu hình endpoint tương ứng. Chỉ các chế độ nhận trực tiếp này mới báo đăng ký thành công sau khi lưu.
+Email gồm tên, số điện thoại, khu vực, gói, nhu cầu, nhà/số lầu, loại TV, khả năng Wi-Fi, thời gian lắp, ghi chú (bao gồm mẫu camera đã chọn), thời gian gửi và mã yêu cầu. Câu hỏi bỏ qua vẫn có dòng ghi rõ chưa cung cấp. Không đưa thông tin khách lên URL, localStorage hay console. FormSubmit là bên xử lý dữ liệu; link chính sách được hiển thị dưới form. Theo tài liệu dịch vụ, yêu cầu được lưu tối đa 30 ngày. Phản hồi thành công xác nhận dịch vụ đã tiếp nhận, không chứng minh email đã vào Inbox. Có thể cần kiểm tra Spam. Mã yêu cầu giúp Hải đối chiếu; không đảm bảo dịch vụ tự chống tạo trùng khi thử lại sau lỗi mạng.
+
+Nếu gửi lỗi, khách có thể thử lại, gọi Hải hoặc bấm **Gửi qua Zalo thay thế**. Luồng Zalo sao chép đủ nội dung rồi mở `https://zalo.me/0764640415`; khách vẫn cần dán và gửi. `VITE_LEAD_DELIVERY=zalo` giữ chế độ Zalo độc lập. Mã Sheets đã chuẩn bị trong `google-sheets/`, nhưng chưa kết nối thật. API/Sheets chỉ hoạt động khi chủ động chọn mode tương ứng và cấu hình endpoint.
 
 ## Kết nối nơi lưu
 
 - Trong `.env.local`, đặt `VITE_LEAD_API_URL` là URL nhận dữ liệu. Khởi động lại Vite khi đổi env.
-- Chọn `VITE_LEAD_DELIVERY=api` hoặc `sheets` để bật nơi nhận đã kết nối. Chỉ có URL mà không chọn mode vẫn dùng Zalo.
+- Chọn `VITE_LEAD_DELIVERY=api` hoặc `sheets` để bật nơi nhận đã kết nối. Chỉ có URL mà không chọn mode vẫn dùng email. `VITE_LEAD_EMAIL` tùy chỉnh địa chỉ nhận; địa chỉ mới cần kích hoạt lại.
 - Với Apps Script, chọn `VITE_LEAD_DELIVERY=sheets` và đặt `VITE_LEAD_GOOGLE_SCRIPT_URL` là URL Web App `/exec`. Chế độ đã chọn quyết định endpoint được dùng. Không cần token Google trên website.
-- Khi deploy GitHub Pages, đặt repository variable `VITE_LEAD_DELIVERY` cùng URL tương ứng, rồi build/deploy lại. Workflow mặc định dùng Zalo nếu không cấu hình chế độ khác.
+- Khi deploy GitHub Pages, đặt repository variable `VITE_LEAD_DELIVERY` cùng URL/email tương ứng, rồi build/deploy lại. Workflow mặc định dùng email nếu không cấu hình chế độ khác.
 - Endpoint công khai cho phép POST từ domain của website, xử lý CORS cho `Content-Type: application/json`. Không đặt mật khẩu, service-role key hoặc token quản trị vào biến `VITE_*`.
 - API kiểm tra lại dữ liệu phía server, lưu vào nơi chỉ Hải có quyền đọc và trả JSON `{ "success": true }` sau khi lưu thành công. Lỗi phải trả HTTP lỗi hoặc `{ "success": false }`. Không dùng `no-cors`: trình duyệt cần đọc xác nhận nhận dữ liệu.
-- Thời gian chờ là 12 giây với API, 25 giây với Apps Script; backend nên chống spam và chống tạo trùng khi khách thử gửi lại sau lỗi mạng.
+- Thời gian chờ là 12 giây với API, 25 giây với Apps Script/email; backend nên chống spam và chống tạo trùng khi khách thử gửi lại sau lỗi mạng.
 
 Payload POST JSON:
 

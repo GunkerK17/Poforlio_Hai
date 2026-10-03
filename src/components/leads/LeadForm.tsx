@@ -17,6 +17,7 @@ export function LeadForm() {
   const [result, setResult] = useState<{ lead: LeadData; submission: LeadSubmission; handoff?: ZaloHandoff } | null>(null);
   const active = useRef<AbortController | null>(null), submitting = useRef(false), root = useRef<HTMLDivElement>(null);
   const requestId = useRef('');
+  const honey = useRef<HTMLInputElement>(null);
   const reduced = useReducedMotion();
   useEffect(() => () => active.current?.abort(), []);
   useEffect(() => {
@@ -34,6 +35,7 @@ export function LeadForm() {
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (submitting.current) return;
+    if (honey.current?.value) { setSendError('Chưa gửi được yêu cầu. Anh/chị liên hệ Hải nhé.'); return; }
     const nextErrors = validateLead(values);
     setErrors(nextErrors); setSendError('');
     const firstError = Object.keys(nextErrors)[0];
@@ -57,6 +59,17 @@ export function LeadForm() {
       if (!controller.signal.aborted) setSendError(error instanceof Error ? error.message : 'Chưa gửi được yêu cầu. Anh/chị thử lại nhé.');
     } finally { if (!controller.signal.aborted) setBusy(false); submitting.current = false; active.current = null; }
   };
+  const sendViaZalo = async () => {
+    if (submitting.current) return;
+    submitting.current = true; setBusy(true);
+    const controller = new AbortController(); active.current = controller;
+    try {
+      const lead = buildLead(values);
+      const handoff = await copyAndOpenZalo(leadMessage(lead), profileData.contact.zaloUrl);
+      if (!controller.signal.aborted) setResult({ lead, submission: { mode: 'zalo' }, handoff });
+    } catch { if (!controller.signal.aborted) setSendError('Kiểm tra lại thông tin trước khi gửi nhé.'); }
+    finally { if (!controller.signal.aborted) setBusy(false); submitting.current = false; active.current = null; }
+  };
   const backToForm = (reset: boolean) => {
     setResult(null); setErrors({}); setSendError('');
     requestId.current = '';
@@ -71,7 +84,9 @@ export function LeadForm() {
     {result ? <LeadResult lead={result.lead} submission={result.submission} initialHandoff={result.handoff} onEdit={() => backToForm(false)} onReset={() => backToForm(true)}/> : <form onSubmit={submit} noValidate aria-label="Đăng ký tư vấn Internet FPT">
       <div className="lead-form-heading"><span>Thông tin tư vấn</span><small>{progress}/4 mục cần điền</small></div>
       <div className="lead-progress" role="progressbar" aria-label="Thông tin bắt buộc đã hoàn thành" aria-valuemin={0} aria-valuemax={4} aria-valuenow={progress}><span style={{ width: `${progress * 25}%` }}/></div>
+      {leadDeliveryMode === 'email' && <p className="lead-delivery-note">Điền thông tin và bấm Gửi. Hải sẽ nhận yêu cầu để liên hệ tư vấn, anh/chị không cần mở Zalo.</p>}
       {(leadDeliveryMode === 'demo' || leadDeliveryMode === 'zalo') && <p className="lead-delivery-note">{leadDeliveryMode === 'demo' ? 'Bản xem thử: thông tin chưa gửi đến Hải.' : 'Điền thông tin → mở Zalo → dán nội dung và gửi cho Hải.'}</p>}
+      <div className="lead-honey" aria-hidden="true"><label htmlFor="lead-website">Để trống mục này</label><input ref={honey} id="lead-website" name="website" tabIndex={-1} autoComplete="off"/></div>
       <fieldset disabled={busy} className="lead-fields">
         <div className="lead-fields-pair"><div className="lead-field"><label htmlFor="lead-fullName">Họ và tên <span aria-hidden="true">*</span></label><input id="lead-fullName" name="fullName" value={values.fullName} onChange={event => change('fullName', event.target.value)} onBlur={() => blur('fullName')} autoComplete="name" placeholder="Nguyễn Văn A" maxLength={80} required {...attributes('fullName')}/>{fieldError('fullName')}</div>
         <div className="lead-field"><label htmlFor="lead-phone">Số điện thoại <span aria-hidden="true">*</span></label><input id="lead-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={values.phone} onChange={event => change('phone', event.target.value)} onBlur={() => blur('phone')} placeholder="09xx xxx xxx" maxLength={24} required {...attributes('phone')}/>{fieldError('phone')}</div></div>
@@ -88,9 +103,10 @@ export function LeadForm() {
         <p className="lead-home-tip">Thông tin giúp Hải tư vấn phủ sóng các tầng và cách kết nối TV phù hợp. Chưa rõ thì anh/chị có thể bỏ qua.</p>
         <div className="lead-field"><label htmlFor="lead-note">Ghi chú <small>Không bắt buộc</small></label><textarea id="lead-note" name="note" rows={2} value={values.note} onChange={event => change('note', event.target.value)} placeholder="Anh/chị có thể ghi thêm nhu cầu..." maxLength={600}/>{fieldError('note')}</div>
       </fieldset>
-      {sendError && <div className="lead-send-error" role="alert"><strong>{sendError}</strong><a href={profileData.contact.zaloUrl} target="_blank" rel="noopener noreferrer"><MessageCircle size={14}/>Liên hệ Hải qua Zalo <ArrowRight size={14}/></a></div>}
+      {sendError && <div className="lead-send-error" role="alert"><strong>{sendError}</strong><button type="button" disabled={busy} onClick={sendViaZalo}><MessageCircle size={14}/>Gửi qua Zalo thay thế <ArrowRight size={14}/></button><a href={`tel:${profileData.contact.phone}`}>Gọi Hải: {profileData.contact.phoneFormatted}</a></div>}
       <button type="submit" className="lead-submit" disabled={busy} aria-busy={busy}>{busy ? <LoaderCircle className="lead-loading" size={19}/> : leadDeliveryMode === 'zalo' ? <MessageCircle size={18}/> : <Send size={18}/>} {busy ? leadDeliveryMode === 'zalo' ? 'Đang chuẩn bị nội dung...' : 'Đang gửi yêu cầu...' : leadDeliveryMode === 'zalo' ? 'GỬI YÊU CẦU QUA ZALO' : 'GỬI YÊU CẦU TƯ VẤN'}</button>
       <p className="lead-form-footnote">{leadDeliveryMode === 'zalo' ? 'Web sao chép đầy đủ yêu cầu và mở Zalo. Anh/chị dán nội dung, bấm Gửi để Hải nhận được thông tin.' : 'Thông tin dùng để liên hệ tư vấn. Đây là yêu cầu tư vấn, chưa phải hợp đồng đăng ký.'}</p>
+      {leadDeliveryMode === 'email' && <p className="lead-form-footnote">Thông tin được chuyển qua <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">FormSubmit</a> đến email của Hải để tư vấn.</p>}
     </form>}
   </div>;
 }
