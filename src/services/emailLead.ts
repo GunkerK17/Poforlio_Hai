@@ -28,9 +28,11 @@ export async function submitEmailLead(lead: LeadData, signal: AbortSignal, reque
     method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(leadEmailPayload(lead, requestId)), credentials: 'omit', signal,
   });
-  if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
+  if (!response.ok) {
     throw new Error('Chưa gửi được yêu cầu. Anh/chị thử lại hoặc liên hệ Hải qua Zalo nhé.');
   }
+  // The live AJAX endpoint returns JSON with text/html headers. Validate the
+  // parsed payload instead of trusting its Content-Type; real HTML still fails.
   const result = await response.json().catch(() => null);
   // FormSubmit uses string booleans. Activation is a failed delivery, even on HTTP 200.
   if (/activat|confirm.*email/i.test(String(result?.message || ''))) {
