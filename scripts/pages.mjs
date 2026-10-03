@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, copyFileSync } from 'node:fs';
+import { leadPageTitle, leadPageDescription } from '../src/data/leadPageMeta.mjs';
 const base = '/Poforlio_Hai/';
 // Adapt absolute public asset and navigation URLs for GitHub project Pages.
 for (const name of readdirSync('dist/assets')) {
@@ -17,6 +18,13 @@ const wifiHtml = readFileSync('dist/index.html', 'utf8')
  .replace('content="GUN"', 'content="Hải Wi-Fi"')
  .replace('<title>Nguyễn Chí Hải (GUN) — Portfolio</title>', '<title>Hải Wi-Fi · Internet FPT Cần Thơ</title>');
 writeFileSync('dist/wifi/index.html', wifiHtml);
+mkdirSync('dist/wifi/dang-ky', { recursive: true });
+const registrationHtml = wifiHtml
+ .replace(/<title>[^<]*<\/title>/, `<title>${leadPageTitle}</title>`)
+ .replace(/(<meta name="description" content=")[^"]*("\s*\/>)/, `$1${leadPageDescription}$2`)
+ .replace(/(<meta property="og:title" content=")[^"]*("\s*\/>)/, `$1${leadPageTitle}$2`)
+ .replace(/(<meta property="og:description" content=")[^"]*("\s*\/>)/, `$1${leadPageDescription}$2`);
+writeFileSync('dist/wifi/dang-ky/index.html', registrationHtml);
 copyFileSync('dist/brand/hai-wifi-ios-v2-180.png', 'dist/wifi/apple-touch-icon.png');
 writeFileSync('dist/.nojekyll', '');
 

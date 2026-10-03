@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Camera, Check, Copy, Gift, House, ShieldCheck } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { wifiDevices } from '../../data/wifiDevices';
-import { profileData } from '../../data/profile';
 import type { CameraChoice } from '../../data/wifiExperience';
 import { DeviceStage } from './DeviceStage';
+import { registrationUrl } from '../../data/leadForm';
 
 export function CameraChooser({ selected, onSelect }: { selected: CameraChoice | null; onSelect: (id: CameraChoice) => void }) {
   const [preview, setPreview] = useState<CameraChoice>('camera-indoor'), [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
@@ -30,7 +30,7 @@ export function CameraChooser({ selected, onSelect }: { selected: CameraChoice |
           <button type="button" className="wf-btn camera-select" onClick={() => { onSelect(preview); setCopyState('idle'); }}>{selected === preview ? <Check size={18}/> : <Camera size={18}/>} {selected === preview ? `Đã chọn ${device.title}` : `Tôi chọn ${device.title}`}</button>
         </motion.div></AnimatePresence>
         <div className={`camera-confirm ${selected ? 'has-selection' : ''}`} aria-live="polite">
-          {selectedDevice ? <><span><Check size={17}/>Bạn chọn <strong>{selectedDevice.title}</strong></span><p>01 camera · Wi-Fi + FPT Play · <b>230k/tháng</b></p><div><a className="wf-btn" href={profileData.contact.zaloUrl} target="_blank" rel="noopener noreferrer">Nhắn Hải đăng ký <ArrowUpRight size={16}/></a><button type="button" onClick={copy} className="copy-request"><Copy size={15}/>{copyState === 'copied' ? 'Đã sao chép' : 'Sao chép yêu cầu'}</button></div><small>{copyState === 'failed' ? `Bạn nhắn Hải: combo 230k + ${selectedDevice.title}.` : 'Sao chép yêu cầu rồi gửi qua Zalo để Hải tư vấn.'}</small></> : <p>Chọn một mẫu phía trên để chuẩn bị yêu cầu tư vấn.</p>}
+          {selectedDevice ? <><span><Check size={17}/>Bạn chọn <strong>{selectedDevice.title}</strong></span><p>01 camera · Wi-Fi + FPT Play · <b>230k/tháng</b></p><div><a className="wf-btn" href={registrationUrl('camera', selected!)}>Điền thông tin tư vấn <ArrowUpRight size={16}/></a><button type="button" onClick={copy} className="copy-request"><Copy size={15}/>{copyState === 'copied' ? 'Đã sao chép' : 'Sao chép yêu cầu Zalo'}</button></div><small>{copyState === 'failed' ? `Bạn nhắn Hải: combo 230k + ${selectedDevice.title}.` : 'Mẫu camera đã chọn sẽ được ghi sẵn trong form.'}</small></> : <p>Chọn một mẫu phía trên để chuẩn bị yêu cầu tư vấn.</p>}
         </div>
         <p className="camera-terms">Tặng một camera trong combo, không phải cả hai. Hải xác nhận vị trí lắp và lưu trữ trước khi đăng ký.</p>
       </div>

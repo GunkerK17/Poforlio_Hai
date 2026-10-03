@@ -2,6 +2,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import WifiLanding from './components/WifiLanding';
+import InternetRegistration from './components/InternetRegistration';
 import { ThemeProvider } from './components/ui/ThemeToggle';
 import './index.css';
 import './responsive.css';
@@ -13,10 +14,13 @@ import './wifi-cinematic.css';
 import './theme.css';
 import './portfolio-motion.css';
 import './cv.css';
+import './lead-form.css';
+
+const path = window.location.pathname.replace(/\/$/, '');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>{window.location.pathname.replace(/\/$/, '') .endsWith('/wifi') ? <WifiLanding /> : <App />}</ThemeProvider>
+    <ThemeProvider>{path.endsWith('/wifi/dang-ky') ? <InternetRegistration/> : path.endsWith('/wifi') ? <WifiLanding /> : <App />}</ThemeProvider>
   </StrictMode>,
 );
 

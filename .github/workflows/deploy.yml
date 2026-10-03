@@ -25,6 +25,10 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build -- --base=/Poforlio_Hai/
+        env:
+          VITE_LEAD_DELIVERY: ${{ vars.VITE_LEAD_DELIVERY || 'zalo' }}
+          VITE_LEAD_API_URL: ${{ vars.VITE_LEAD_API_URL }}
+          VITE_LEAD_GOOGLE_SCRIPT_URL: ${{ vars.VITE_LEAD_GOOGLE_SCRIPT_URL }}
       - run: node scripts/pages.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

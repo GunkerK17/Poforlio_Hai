@@ -13,6 +13,7 @@ import { DeviceStage } from './wifi/DeviceStage';
 import { CameraChooser } from './wifi/CameraChooser';
 import { WifiFooter } from './wifi/WifiFooter';
 import { ThemeToggle } from './ui/ThemeToggle';
+import { registrationUrl } from '../data/leadForm';
 import 'lenis/dist/lenis.css';
 import './wifi-landing.css';
 
@@ -53,7 +54,7 @@ export default function WifiLanding() {
     <header className="wl-nav">
       <a href="/" className="wl-brand wl-brand-lockup"><img src={`${import.meta.env.BASE_URL}brand/hai-wifi.svg`} alt=""/><span>HẢI WI-FI<small>TƯ VẤN INTERNET FPT</small></span></a>
       <nav aria-label="Điều hướng Wi-Fi"><a href="#pricing">Gói cước</a><a href="#camera-choice">Chọn camera</a><a href="#location">FPT Cần Thơ</a></nav>
-      <div className="header-actions"><ThemeToggle/><a href={contact.zaloUrl} target="_blank" rel="noopener noreferrer" className="wl-nav-cta">Nhắn Hải <ArrowUpRight size={16}/></a></div>
+      <div className="header-actions"><ThemeToggle/><a href={registrationUrl()} className="wl-nav-cta">Đăng ký <ArrowUpRight size={16}/></a></div>
     </header>
     <main>
       <section className="wf-scrollytelling" ref={intro} aria-label="Khám phá Internet, FPT Play và Camera">
@@ -65,6 +66,7 @@ export default function WifiLanding() {
               <h1>{story.title}<br/><em>{story.accent}</em></h1><p className="wf-intro-text">{story.description}</p><div className="story-offer"><strong>{story.price}</strong><span>{story.offer}</span></div>
             </motion.div></AnimatePresence></div>
             <div className="wf-intro-bottom"><a href={phase === 2 ? '#camera-choice' : '#pricing'} className="wf-btn">{phase === 2 ? 'Chọn camera được tặng' : 'Xem gói phù hợp'} <ArrowUpRight size={17}/></a><a href={`tel:${contact.phone}`} className="wf-phone"><Phone size={15}/>{contact.phoneFormatted}</a></div>
+            <a className="wf-registration-link" href={registrationUrl()}>Để lại nhu cầu, Hải tư vấn <ArrowUpRight size={14}/></a>
             <div className="wf-quick-prices">{wifiPlans.map(plan => <a key={plan.id} href={plan.id === 'camera' ? '#camera-choice' : '#pricing'}><strong>{plan.price}<span>k</span></strong><span>{plan.name}</span><small>/ tháng</small></a>)}</div>
             <div className="story-tabs" role="group" aria-label="Các bước khám phá FPT">{wifiStory.map((item, index) => <button key={item.name} type="button" aria-pressed={phase === index} onClick={() => goToPhase(index)}><span>0{index + 1}</span>{item.name}<i/></button>)}</div>
             <a className="wf-scroll-cue" href="#fpt-play"><span><ArrowDown size={15}/></span>Cuộn để khám phá trọn bộ thiết bị</a>
@@ -85,7 +87,7 @@ export default function WifiLanding() {
           <h3>{plan.name}</h3><p className="wf-price"><strong>{plan.price}<span>k</span></strong><span>/ tháng</span></p>
           <ul>{plan.features.map(text => <li key={text}><Check size={15}/>{text}</li>)}</ul>
           {index === 2 && <p className="plan-camera-picked" aria-live="polite">{chosenCamera ? `Bạn đã chọn: ${chosenCamera.title}` : 'Play 4 hoặc IQ 4S — bạn chọn mẫu được tặng.'}</p>}
-          <a className="wf-btn" href={index === 2 ? '#camera-choice' : contact.zaloUrl} target={index === 2 ? undefined : '_blank'} rel={index === 2 ? undefined : 'noopener noreferrer'}>{index === 2 ? chosenCamera ? 'Xem camera đã chọn' : 'Chọn camera & tư vấn' : `Tư vấn gói ${plan.price}k`} <ArrowUpRight size={17}/></a>
+          <a className="wf-btn" href={index === 2 ? '#camera-choice' : registrationUrl(plan.id)}>{index === 2 ? chosenCamera ? 'Xem camera đã chọn' : 'Chọn camera & tư vấn' : `Tư vấn gói ${plan.price}k`} <ArrowUpRight size={17}/></a>
         </article>)}</div>
         <details id="questions" className="wf-details"><summary>Chi phí lắp đặt & những thông tin cần biết <span>+</span></summary><div>
           <p><strong>Lắp đặt: 300.000đ.</strong> Có thể hỗ trợ 100.000–300.000đ; Hải xác nhận mức áp dụng theo từng trường hợp.</p>

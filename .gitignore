@@ -8,3 +8,8 @@ coverage/
 !.env.example
 Gun Life-*/
 tmp/
+# Google CLI credentials and project connection metadata stay local.
+google-sheets/.clasprc.json
+google-sheets/.clasp.json
+google-sheets/client_secret*.json
+google-sheets/provision-state.json
